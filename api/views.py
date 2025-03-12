@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Post
-from .serializers import PostSerializer
 from .models import Comment
+from .serializers import PostSerializer
 from .serializers import CommentSerializer
 
 
@@ -18,7 +18,8 @@ class PostList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SpecificPost(APIView):
     def get(self, request, pk):
@@ -45,3 +46,18 @@ class CommentList(APIView):
             return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
         except Post.DoesNotExist:
             return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class SpecificComment(APIView):
+    def get(self, request, fk, pk):
+        comment = Comment.objects.get(pk=pk)
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data)
+    
+    def delete(self, request, fk, pk):
+        try:
+            comment = Comment.objects.get(pk=pk)
+            comment.delete()
+            return Response({"message": "Comment deleted"}, status=status.HTTP_204_NO_CONTENT)
+        except Comment.DoesNotExist:
+            return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
