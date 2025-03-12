@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import render
 from .models import Post
 from .models import Comment
 from .serializers import PostSerializer
@@ -19,6 +20,12 @@ class PostList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Image(APIView):
+    def get(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        return render(request, 'image.html', {'post': post})
 
 
 class SpecificPost(APIView):
