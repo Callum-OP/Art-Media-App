@@ -33,7 +33,15 @@ class SpecificPost(APIView):
         post = Post.objects.get(pk=pk)
         serializer = PostSerializer(post)
         return Response(serializer.data)
-    
+
+    def put(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        
     def delete(self, request, pk):
         try:
             post = Post.objects.get(pk=pk)
@@ -60,6 +68,14 @@ class SpecificComment(APIView):
         comment = Comment.objects.get(pk=pk)
         serializer = CommentSerializer(comment)
         return Response(serializer.data)
+
+    def put(self, request, fk, pk):
+        comment = Comment.objects.get(pk=pk)
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, fk, pk):
         try:
