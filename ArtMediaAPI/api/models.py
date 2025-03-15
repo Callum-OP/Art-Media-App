@@ -1,8 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 
 class Post(models.Model):
+    # Stores username, image, body of text and time created
     username = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='uploads/', blank=True)
+    image = models.ImageField(upload_to='uploads/', blank=True) # Image is optional
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -10,6 +13,7 @@ class Post(models.Model):
         return self.name
 
 class Comment(models.Model):
+    # Stores post ID, username, body of text and time created
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE) # Ensure when post is deleted, comments are also deleted
     username = models.CharField(max_length=255)
     text = models.TextField()
