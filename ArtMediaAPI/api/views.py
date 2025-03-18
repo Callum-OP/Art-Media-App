@@ -7,6 +7,7 @@ from .models import Comment
 from .serializers import UserSerializer
 from .serializers import PostSerializer
 from .serializers import CommentSerializer
+from django.contrib.auth.decorators import login_required
 
 
 class RegisterUser(APIView):
@@ -26,6 +27,7 @@ class PostList(APIView):
         return Response(serializer.data)
 
     # Create a new post
+    @login_required
     def post(self, request):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
