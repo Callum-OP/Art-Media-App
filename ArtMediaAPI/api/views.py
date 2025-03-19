@@ -8,9 +8,9 @@ from .serializers import UserSerializer
 from .serializers import PostSerializer
 from .serializers import CommentSerializer
 from django.middleware.csrf import get_token
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import User
-
+# rom rest_framework.permissions import IsAuthenticated
 
 class GetToken(APIView):
     # Retrieve CSRF token for user authentication
@@ -36,6 +36,7 @@ class PostList(APIView):
         return Response(serializer.data)
 
     # Create a new post
+    #@login_required
     def post(self, request):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
