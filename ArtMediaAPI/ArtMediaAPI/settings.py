@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+AUTH_USER_MODEL = 'api.CustomUser'
+
 # Redirect after successful login/logout
 LOGIN_REDIRECT_URL = '/api/posts/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = 'accounts/login/'
 
 # Set each sesssion for 1 hour (in seconds)
 SESSION_COOKIE_AGE = 3600

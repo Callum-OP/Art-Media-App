@@ -2,15 +2,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import render
+from django.conf import settings
 from .models import Post
 from .models import Comment
 from .serializers import UserSerializer
 from .serializers import PostSerializer
 from .serializers import CommentSerializer
 from django.middleware.csrf import get_token
-from django.contrib.auth.decorators import login_required
+#from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import User
 # rom rest_framework.permissions import IsAuthenticated
+# from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import CustomUser
 
 class GetToken(APIView):
     # Retrieve CSRF token for user authentication
@@ -20,6 +23,12 @@ class GetToken(APIView):
 
 
 class RegisterUser(APIView):
+    # View all users
+    def get(self, request):
+        users = CustomUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
     # Create a new user
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -27,6 +36,7 @@ class RegisterUser(APIView):
             serializer.save()
             return Response({"message": "Account created"}, status=status.HTTP_201_CREATED)
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class PostList(APIView):
     # View all posts
@@ -36,7 +46,6 @@ class PostList(APIView):
         return Response(serializer.data)
 
     # Create a new post
-    #@login_required
     def post(self, request):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():

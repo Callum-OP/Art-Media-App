@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from .models import Post
 from .models import Comment
+from .models import CustomUser
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('username', 'email')
+        model = CustomUser
+        fields = ('id', 'username', 'email')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,4 +20,4 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ['id', 'username', 'image', 'text', 'comments', 'created_at']
+        fields = ['id', 'user', 'image', 'text', 'comments', 'created_at']
