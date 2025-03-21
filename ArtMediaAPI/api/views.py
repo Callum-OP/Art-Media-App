@@ -14,6 +14,7 @@ from django.middleware.csrf import get_token
 # rom rest_framework.permissions import IsAuthenticated
 # from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import CustomUser
+from django.contrib.auth import authenticate, login, logout
 
 class GetToken(APIView):
     # Retrieve CSRF token for user authentication
@@ -22,7 +23,24 @@ class GetToken(APIView):
         return Response({'csrfToken': csrf_token})
 
 
-class RegisterUser(APIView):
+class Login(APIView):
+    def get(self, request):
+        logout(request)
+        return Response("Successfully logged out")
+
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return Response("Successfully logged in")
+        else:
+            return Response("Invalid username or password")
+
+
+class UserList(APIView):
     # View all users
     def get(self, request):
         users = CustomUser.objects.all()
@@ -31,11 +49,15 @@ class RegisterUser(APIView):
 
     # Create a new user
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Account created"}, status=status.HTTP_201_CREATED)
-        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        # Ensure username is unique
+        if not CustomUser.objects.filter(username=request.POST.get('username')).exists():
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"message": "Account created"}, status=status.HTTP_201_CREATED)
+            return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PostList(APIView):
@@ -43,6 +65,10 @@ class PostList(APIView):
     def get(self, request):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
+        if request.user.is_authenticated:
+            print("User is logged in!")
+        else:
+            print("User is not logged in.")
         return Response(serializer.data)
 
     # Create a new post
