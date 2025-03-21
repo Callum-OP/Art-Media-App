@@ -7,7 +7,6 @@ from .views import Image
 from .views import CommentList
 from .views import UserList
 from .views import Login
-from .views import GetToken
 
 
 urlpatterns = [
@@ -18,5 +17,4 @@ urlpatterns = [
     path('comments/', CommentList.as_view(), name='comment-list'), # Creating a comment
     path('users/', UserList.as_view(), name='user-list'), # Creating a user account
     path('login/', Login.as_view(), name='login'), # Logging and out of a user account
-    path('token/', GetToken.as_view(), name='get_token'),
 ]

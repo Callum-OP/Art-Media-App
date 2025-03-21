@@ -9,35 +9,36 @@ from .serializers import UserSerializer
 from .serializers import PostSerializer
 from .serializers import CommentSerializer
 from django.middleware.csrf import get_token
-#from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import permission_classes
+# from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import User
-# rom rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 # from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 
-class GetToken(APIView):
-    # Retrieve CSRF token for user authentication
-    def get(self, request):
-        csrf_token = get_token(request)
-        return Response({'csrfToken': csrf_token})
-
 
 class Login(APIView):
+    # Log out of user account
     def get(self, request):
         logout(request)
         return Response("Successfully logged out")
 
+    # Log into a user account
     def post(self, request):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.data.get('username')
+        password = request.data.get('password')
+        # Ensure that user exists
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
             return Response("Successfully logged in")
+            # After login a crsf token will be available within cookies 
+            # put the token in a header labelled X-CSRFToken 
+            # for use in accessing views that are for logged in users only
         else:
-            return Response("Invalid username or password")
+            return Response("Invalid username or password", status=401)
 
 
 class UserList(APIView):
@@ -72,6 +73,7 @@ class PostList(APIView):
         return Response(serializer.data)
 
     # Create a new post
+    @permission_classes([IsAuthenticated]) # Logged in users only
     def post(self, request):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
@@ -95,6 +97,7 @@ class SpecificPost(APIView):
         return Response(serializer.data)
 
     # Edit a post
+    @permission_classes([IsAuthenticated]) # Logged in users only
     def put(self, request, pk):
         post = Post.objects.get(pk=pk)
         serializer = PostSerializer(post, data=request.data)
@@ -104,6 +107,7 @@ class SpecificPost(APIView):
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
         
     # Delete a post
+    @permission_classes([IsAuthenticated]) # Logged in users only
     def delete(self, request, pk):
         try:
             post = Post.objects.get(pk=pk)
@@ -115,6 +119,7 @@ class SpecificPost(APIView):
 
 class CommentList(APIView):
     # Create a new comment
+    @permission_classes([IsAuthenticated]) # Logged in users only
     def post(self, request):
         try:
             serializer = CommentSerializer(data=request.data)
@@ -134,6 +139,7 @@ class SpecificComment(APIView):
         return Response(serializer.data)
 
     # Edit a comment
+    @permission_classes([IsAuthenticated]) # Logged in users only
     def put(self, request, fk, pk):
         comment = Comment.objects.get(pk=pk)
         serializer = CommentSerializer(comment, data=request.data)
@@ -143,6 +149,7 @@ class SpecificComment(APIView):
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
     
     # Delete a comment
+    @permission_classes([IsAuthenticated]) # Logged in users only
     def delete(self, request, fk, pk):
         try:
             comment = Comment.objects.get(pk=pk)
