@@ -120,9 +120,11 @@ class SpecificPost(APIView):
 class CommentList(APIView):
     # Create a new comment
     @permission_classes([IsAuthenticated]) # Logged in users only
-    def post(self, request):
+    def post(self, request, fk):
+        data = request.data.copy()
+        data['post'] = fk
         try:
-            serializer = CommentSerializer(data=request.data)
+            serializer = CommentSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
