@@ -61,6 +61,13 @@ class UserList(APIView):
             return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class SpecificUser(APIView):
+    # View all users
+    def get(self, request, pk):
+        users = CustomUser.objects.get(pk=pk)
+        serializer = UserSerializer(users)
+        return Response(serializer.data)
+
 class PostList(APIView):
     # View all posts
     def get(self, request):
