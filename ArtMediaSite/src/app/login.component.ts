@@ -3,6 +3,8 @@ import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'login',
@@ -13,9 +15,11 @@ import { FormBuilder, Validators } from '@angular/forms';
 // Class to login a user
 export class LoginComponent {
   loginForm: any;
+  user: any;
 
   constructor(private authService: AuthService, 
   private webService: WebService,
+  private cookieService: CookieService,
   private route: ActivatedRoute,
   private formBuilder: FormBuilder,) {}
 
@@ -31,11 +35,15 @@ export class LoginComponent {
   // Checks if the user exists and then logs them in if they do
   onSubmit() {
     this.webService.loginUser(this.loginForm.value)
-    .subscribe( (response: any) => {
-      this.authService.setToken(response.token)
-      this.authService.setUser(response.userid)
-      return window.location.href='http://localhost:4200/posts';
-    })
+    .subscribe({
+      next: (response: any) => {
+        this.authService.setUserID(response.body.id);
+        this.authService.setUsername(response.body.username);
+        this.authService.setToken(this.cookieService.get('csrftoken'));
+        return window.location.href='http://localhost:4200/posts/';
+      },
+      error: (err) => console.error("Error fetching posts:", err)
+    });
   }
 
   // Validation for the user form

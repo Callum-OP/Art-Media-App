@@ -10,10 +10,7 @@ from .serializers import PostSerializer
 from .serializers import CommentSerializer
 from django.middleware.csrf import get_token
 from rest_framework.decorators import permission_classes
-# from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
-# from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 
@@ -33,10 +30,10 @@ class Login(APIView):
 
         if user is not None:
             login(request, user)
-            return Response("Successfully logged in")
             # After login a crsf token will be available within cookies 
-            # put the token in a header labelled X-CSRFToken 
             # for use in accessing views that are for logged in users only
+            data = Response({'id': user.id, 'username':  user.username})
+            return data
         else:
             return Response("Invalid username or password", status=401)
 

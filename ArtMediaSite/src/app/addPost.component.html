@@ -1,0 +1,25 @@
+<div>
+  <h2>Add a new post</h2>
+  <div class="form">
+    <form [formGroup] = "postForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="text">User</label><br>
+        <input type="text" name="user" id="user" placeholder="User"
+          class="form-control" formControlName="user">
+      </div>
+      <div class="form-group">
+        <label for="text">Text</label><br>
+        <textarea name="text" id="text"  rows="3" placeholder="Text for the post"
+          class="form-control" formControlName="text">
+        </textarea>
+      </div>
+      <div class="form-group">
+        <label for="image">Image or Video</label><br>
+        <input type="file" name="image" id="image" 
+        class="form-control" formControlName="image" placeholder="File for image or video">
+      </div><br>
+      <button type="submit"
+        class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>

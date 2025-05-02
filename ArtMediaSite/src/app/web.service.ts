@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable} from '@angular/core';
 import { AuthService } from './authservice.component';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +14,8 @@ export class WebService {
   private userid: any
 
   constructor(private authService: AuthService, 
-    private http: HttpClient, private route: ActivatedRoute) {
+    private http: HttpClient, 
+    private route: ActivatedRoute) {
   }
 
   post_list: any;
@@ -34,7 +35,7 @@ export class WebService {
     postData.append("username", user.username);
     postData.append("password", user.password);
 
-    return this.http.post('http://127.0.0.1:8000/api/login/', postData);
+    return this.http.post('http://127.0.0.1:8000/api/login/', postData, { withCredentials: true, observe: 'response' as 'response' })
   }
 
   logoutUser(user: any) {
@@ -61,12 +62,19 @@ export class WebService {
   }
 
   postPost(Post: any) {
+    this.token = this.authService.getToken();
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }), 
+    };
+
     let postData = new FormData();
     postData.append("user", Post.user_id);
     postData.append("text", Post.text);
     postData.append("image", Post.image);
 
-    return this.http.post('http://127.0.0.1:8000/api/posts/', postData);
+    return this.http.post('http://127.0.0.1:8000/api/posts/', postData, requestOptions);
   }
 
   editPost(Post: any, id: any) {
