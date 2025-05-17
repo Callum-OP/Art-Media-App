@@ -25,19 +25,25 @@ export class AddPostComponent {
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.postForm = this.formBuilder.group( {
-      image: ['', Validators.required],
       text: ['', Validators.required],
-      user: ['', Validators.required],
     });
-    this.posts = this.webService.getPost(
-    this.route.snapshot.params['id']);
+  }
+
+  // Grabs file inputted by user and stores it in imagefile
+  imageFile: File | null = null;
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.imageFile = file;
+    }
   }
 
   // Adds the post to the database
   onSubmit() {
-    this.webService.postPost(this.postForm.value)
+    this.webService.postPost(this.imageFile, this.postForm.value)
     .subscribe( (response: any) => {
-      this.postForm.reset();
+      this.postForm.reset(); 
+      this.imageFile = null;
     })
   }
 
@@ -46,9 +52,9 @@ export class AddPostComponent {
     return this.postForm.controls[control].invalid && this.postForm.controls[control].touched;
   }
   isUnTouched() {
-    return this.postForm.controls.user.pristine || this.postForm.controls.text.pristine;
+    return this.postForm.controls.text.pristine;
   }
   isIncomplete(){
-    return this.isInvalid('user') || this.isInvalid('text') || this.isUnTouched();
+    return this.isInvalid('text') || this.isUnTouched();
   }
 }

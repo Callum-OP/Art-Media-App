@@ -1,10 +1,12 @@
+from pathlib import Path
 from django.db import models
 from django.conf import settings
 import django.utils.timezone
 import uuid
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_delete
+
 
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -15,6 +17,11 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+def file_cleanup(sender, **kwargs):
+    # Finds file associated with a deleted post
+    path = Path(kwargs["instance"].image.path)
+    if path.is_file():
+        path.unlink()
 
 def validate_file(value):
     # Check if a file matches the extensions allowed
@@ -47,3 +54,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.name} (Sub-item of {self.post.name})"
+    
+post_delete.connect(file_cleanup, sender=Post, dispatch_uid="someresource.file_cleanup")

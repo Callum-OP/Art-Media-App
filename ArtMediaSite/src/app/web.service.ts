@@ -12,6 +12,7 @@ export class WebService {
   private postid: any;
   private token: any
   private userid: any
+  img: any;
 
   constructor(private authService: AuthService, 
     private http: HttpClient, 
@@ -61,8 +62,11 @@ export class WebService {
     return this.http.get('http://127.0.0.1:8000/api/posts/' + id + '/');
   }
 
-  postPost(Post: any) {
+  postPost(Image:any, Post: any) {
     this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
     const requestOptions = {                                                                                                                                                                                 
       headers: new HttpHeaders({
         'X-CSRFToken': this.token,
@@ -70,9 +74,16 @@ export class WebService {
     };
 
     let postData = new FormData();
-    postData.append("user", Post.user_id);
+    if (Image instanceof File) {
+      this.img = Image;
+    } else {
+      this.img = "";
+    }
+
+    this.userid = this.authService.getUserID();
+    postData.append("user", this.userid);
     postData.append("text", Post.text);
-    postData.append("image", Post.image);
+    postData.append("image", this.img);
 
     return this.http.post('http://127.0.0.1:8000/api/posts/', postData, requestOptions);
   }
