@@ -107,7 +107,7 @@ export class WebService {
         'X-CSRFToken': this.token,
       }), 
     };
-    
+
     return this.http.delete('http://127.0.0.1:8000/api/posts/' + id + '/', {
       headers: { Authorization: `Bearer ${this.token}` }
     });
