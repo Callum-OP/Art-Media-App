@@ -14,16 +14,18 @@
     <h5>Login to add your own posts</h5><br>
   </ng-template>
     <div *ngFor = "let post of posts">
-        <div class="post">
-          <div style= "padding: 10px;">
-            <h4> {{ post.user }} </h4>
-            <p> {{ post.text }} </p>
-          </div>
-          <div>
-            <img [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
-          </div>
+      <div class="post">
+        <div style= "padding: 10px;">
+          <h4> {{ post.user }} </h4>
+          <p> {{ post.text }} </p>
         </div>
         <div>
-          <br><br>
+          <img [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
+        </div>
+      </div>
+      <div>
+        <br><br>
+        <button (click) = "onDelete(post.id)">Delete</button>
+      </div>
     </div>
 </div>

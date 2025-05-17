@@ -33,4 +33,12 @@ import { ActivatedRoute } from '@angular/router';
           error: (err) => console.error("Error fetching posts:", err)
         });
     }
+
+    // Deletes the property currently being shown
+    onDelete(id: any) {
+      this.webService.deletePost(id)
+      .subscribe( (response: any) => {
+        return window.location.href='http://localhost:4200/posts';
+      } )
+    }
   }

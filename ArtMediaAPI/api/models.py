@@ -17,11 +17,12 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-def file_cleanup(sender, **kwargs):
+def file_cleanup(sender, instance, **kwargs):
     # Finds file associated with a deleted post
-    path = Path(kwargs["instance"].image.path)
-    if path.is_file():
-        path.unlink()
+    if instance.image and instance.image.name:
+        path = Path(instance.image.path)
+        if path.is_file():
+            path.unlink()
 
 def validate_file(value):
     # Check if a file matches the extensions allowed

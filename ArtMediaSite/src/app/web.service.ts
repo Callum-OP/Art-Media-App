@@ -98,8 +98,17 @@ export class WebService {
   }
 
   deletePost(id: any) {
-    this.token = this.authService.getToken()
-    return this.http.delete('http://localhost:5000/api/v1.0/homeinventory/' + id + '/', {
+    this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }), 
+    };
+    
+    return this.http.delete('http://127.0.0.1:8000/api/posts/' + id + '/', {
       headers: { Authorization: `Bearer ${this.token}` }
     });
   }
