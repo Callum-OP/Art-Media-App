@@ -88,13 +88,30 @@ export class WebService {
     return this.http.post('http://127.0.0.1:8000/api/posts/', postData, requestOptions);
   }
 
-  editPost(Post: any, id: any) {
-    let postData = new FormData();
-    postData.append("user", Post.user_id);
-    postData.append("text", Post.text);
-    postData.append("image", Post.image);
+  editPost(Image:any, Post: any, id: any) {
+    this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }), 
+    };
 
-    return this.http.put('http://127.0.0.1:8000/api/posts/' + id + '/', postData);
+    let postData = new FormData();
+    if (Image instanceof File) {
+      this.img = Image;
+    } else {
+      this.img = "";
+    }
+
+    this.userid = this.authService.getUserID();
+    postData.append("user", this.userid);
+    postData.append("text", Post.text);
+    postData.append("image", this.img);
+
+    return this.http.put('http://127.0.0.1:8000/api/posts/' + id + '/', postData, requestOptions);
   }
 
   deletePost(id: any) {

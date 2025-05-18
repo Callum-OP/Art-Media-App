@@ -37,6 +37,11 @@ import { Router } from '@angular/router';
           error: (err) => console.error("Error fetching posts:", err)
         });
     }
+
+    // Take user to edit item page
+    onEdit(id: any) {
+      this.router.navigate(['/posts/' + id + '/edit']);
+    }
     
     // Deletes the post currently being shown
     onDelete(id: any) {

@@ -25,12 +25,10 @@
     </div>
     <div>
       <br><br>
-      <button (click) = "onDelete(post.id)">Delete</button>
+      <button (click) = "onEdit(post.id)">Edit</button><button (click) = "onDelete(post.id)">Delete</button>
     </div>
     <div *ngFor="let comment of post.comments">
-      <div>
-        <h4>{{ comment.user }}</h4>
-        <p>{{ comment.text }}</p>
-      </div>
+      <h4>{{ comment.user }}</h4>
+      <p>{{ comment.text }}</p>
     </div>
 </div>

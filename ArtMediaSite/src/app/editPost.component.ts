@@ -5,13 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'addPost',
-  templateUrl: './addPost.component.html',
-  styleUrls: ['./addPost.component.css']
+  selector: 'editPost',
+  templateUrl: './editPost.component.html',
+  styleUrls: ['./editPost.component.css']
 })
 
-// Class to add a post to the posts database
-export class AddPostComponent {
+// Class to edit a post in the posts database
+export class EditPostComponent {
+  post: any = [];
   postForm: any;
   user: any;
 
@@ -20,11 +21,15 @@ export class AddPostComponent {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder) {}
 
-  // On startup the add post form is set
+  // On startup the edit post form is set
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.postForm = this.formBuilder.group({
       text: ['', Validators.required],
+    });
+    this.webService.getPost(this.route.snapshot.params['id']).subscribe(postData => {
+      this.post = postData;
+      this.postForm.patchValue(this.post);
     });
   }
 
@@ -37,16 +42,16 @@ export class AddPostComponent {
     }
   }
 
-  // Adds the post to the database
+  // Edit the post in the database
   onSubmit() {
-    this.webService.postPost(this.imageFile, this.postForm.value)
+    this.webService.editPost(this.imageFile, this.postForm.value, this.route.snapshot.params['id'])
     .subscribe( (response: any) => {
       this.postForm.reset(); 
       this.imageFile = null;
     })
   }
 
-  // Validation for the add post form
+  // Validation for the edit post form
   isInvalid(control: any) {
     return this.postForm.controls[control].invalid && this.postForm.controls[control].touched;
   }

@@ -10,17 +10,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login.component';
 import { PostsComponent } from './posts.component';
 import { AddPostComponent } from './addPost.component';
+import { EditPostComponent } from './editPost.component';
 // import { NavComponent } from './nav.component';
 
 const routes = [
   { path: 'login', component: LoginComponent },
   { path: 'posts', component: PostsComponent },
   { path: 'addPost', component: AddPostComponent },
+  { path: 'posts/:id/edit', component: EditPostComponent },
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, PostsComponent, AddPostComponent,
+    AppComponent, LoginComponent, PostsComponent, AddPostComponent, EditPostComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, RouterModule,
