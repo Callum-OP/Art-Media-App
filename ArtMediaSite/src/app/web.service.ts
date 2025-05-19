@@ -41,7 +41,7 @@ export class WebService {
     return this.http.post('http://127.0.0.1:8000/api/login/', postData, { withCredentials: true, observe: 'response' as 'response' })
   }
 
-  logoutUser(user: any) {
+  logoutUser() {
     return this.http.get('http://127.0.0.1:8000/api/login/');
   }
 

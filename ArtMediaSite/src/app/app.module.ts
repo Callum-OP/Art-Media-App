@@ -6,6 +6,9 @@ import { WebService } from './web.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { NavComponent } from './nav.component';
 
 import { LoginComponent } from './login.component';
 import { PostsComponent } from './posts.component';
@@ -13,7 +16,6 @@ import { AddPostComponent } from './addPost.component';
 import { EditPostComponent } from './editPost.component';
 import { AddCommentComponent } from './addComment.component';
 import { EditCommentComponent } from './editComment.component';
-// import { NavComponent } from './nav.component';
 
 const routes = [
   { path: 'login', component: LoginComponent },
@@ -26,11 +28,11 @@ const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, PostsComponent, AddPostComponent, EditPostComponent, AddCommentComponent, EditCommentComponent,
+    AppComponent, NavComponent, LoginComponent, PostsComponent, AddPostComponent, EditPostComponent, AddCommentComponent, EditCommentComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, RouterModule,
-    RouterModule.forRoot(routes), ReactiveFormsModule
+    RouterModule.forRoot(routes), ReactiveFormsModule, NgbModule,
   ],
   providers: [WebService],
   bootstrap: [AppComponent]
