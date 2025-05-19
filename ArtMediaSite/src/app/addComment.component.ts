@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -18,6 +18,7 @@ export class AddCommentComponent {
   constructor(private webService: WebService, 
     private authService: AuthService,
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder) {}
 
   // On startup the add comment form is set
@@ -33,6 +34,7 @@ export class AddCommentComponent {
     this.webService.postComment(this.commentForm.value, this.route.snapshot.params['postID'])
     .subscribe( (response: any) => {
       this.commentForm.reset(); 
+      this.router.navigate(['/posts']);
     })
   }
 

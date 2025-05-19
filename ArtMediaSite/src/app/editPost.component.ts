@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -19,6 +19,7 @@ export class EditPostComponent {
   constructor(private webService: WebService, 
     private authService: AuthService,
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder) {}
 
   // On startup the edit post form is set
@@ -58,6 +59,7 @@ export class EditPostComponent {
     .subscribe( (response: any) => {
       this.postForm.reset(); 
       this.imageFile = null;
+      this.router.navigate(['/posts']);
     })
   }
 

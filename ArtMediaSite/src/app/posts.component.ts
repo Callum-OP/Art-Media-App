@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'posts',
@@ -53,6 +52,7 @@ import { Router } from '@angular/router';
       this.webService.deletePost(postID)
       .subscribe( (response: any) => {
         this.router.navigate(['/posts']);
+        window.location.reload();
       })
     }
 
@@ -71,6 +71,7 @@ import { Router } from '@angular/router';
       this.webService.deleteComment(commentID)
       .subscribe( (response: any) => {
         this.router.navigate(['/posts']);
+        window.location.reload();
       })
     }
   }
