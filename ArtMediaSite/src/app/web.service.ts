@@ -131,4 +131,24 @@ export class WebService {
       headers: { Authorization: `Bearer ${this.token}` }
     });
   }
+
+  postComment(Comment: any, id: any) {
+    this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }), 
+    };
+
+    let postData = new FormData();
+
+    this.userid = this.authService.getUserID();
+    postData.append("user", this.userid);
+    postData.append("text", Comment.text);
+
+    return this.http.post('http://127.0.0.1:8000/api/posts/' + id + '/comments/', postData, requestOptions);
+  }
 }

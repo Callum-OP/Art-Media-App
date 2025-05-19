@@ -5,9 +5,7 @@
     <br>
     {{ user }}
     {{ token }}
-    <button [routerLink]="'/addPost'">
-      Add New Post
-    </button><br><br>
+    <button (click) = "onAddPost()">Add New Post</button><br><br>
   </ng-container>
   <ng-template #loggedOut>
     Hello
@@ -23,13 +21,14 @@
       <div>
         <img [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
       </div>
-    </div>
-    <div>
-      <br><br>
       <button (click) = "onEdit(post.id)">Edit</button><button (click) = "onDelete(post.id)">Delete</button>
+      <br><br>
+      <button (click) = "onAddComment(post.id)">Add Comment</button>
+      <br>
     </div>
     <div *ngFor="let comment of post.comments">
       <h4>{{ comment.user }}</h4>
       <p>{{ comment.text }}</p>
+      <br><br>
     </div>
 </div>

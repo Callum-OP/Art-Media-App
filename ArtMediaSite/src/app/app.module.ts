@@ -11,6 +11,7 @@ import { LoginComponent } from './login.component';
 import { PostsComponent } from './posts.component';
 import { AddPostComponent } from './addPost.component';
 import { EditPostComponent } from './editPost.component';
+import { AddCommentComponent } from './addComment.component';
 // import { NavComponent } from './nav.component';
 
 const routes = [
@@ -18,11 +19,12 @@ const routes = [
   { path: 'posts', component: PostsComponent },
   { path: 'addPost', component: AddPostComponent },
   { path: 'posts/:id/edit', component: EditPostComponent },
+  { path: 'posts/:id/addComment', component: AddCommentComponent },
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, PostsComponent, AddPostComponent, EditPostComponent,
+    AppComponent, LoginComponent, PostsComponent, AddPostComponent, EditPostComponent, AddCommentComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, RouterModule,

@@ -38,7 +38,12 @@ import { Router } from '@angular/router';
         });
     }
 
-    // Take user to edit item page
+    // Take user to add post page
+    onAddPost() {
+      this.router.navigate(['/addPost']);
+    }
+
+    // Take user to edit post page
     onEdit(id: any) {
       this.router.navigate(['/posts/' + id + '/edit']);
     }
@@ -49,5 +54,10 @@ import { Router } from '@angular/router';
       .subscribe( (response: any) => {
         this.router.navigate(['/posts']);
       })
+    }
+
+    // Take user to add comment page
+    onAddComment(id: any) {
+      this.router.navigate(['/posts/' + id + '/addComment']);
     }
   }
