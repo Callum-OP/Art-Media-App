@@ -29,11 +29,18 @@ export class AddPostComponent {
   }
 
   // Grabs file inputted by user and stores it in imagefile
+  // Also stores url so that the file can be previewed
   imageFile: File | null = null;
+  imagePreview: string | null = null;
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.imageFile = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 

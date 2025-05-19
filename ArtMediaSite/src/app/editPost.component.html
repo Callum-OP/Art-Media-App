@@ -12,6 +12,10 @@
         <label for="image">Image or Video</label><br>
         <input type="file" (change)="onFileSelected($event)" name="image" id="image" 
         class="form-control" placeholder="File for image or video">
+      </div>
+      <div *ngIf="imagePreview">
+        <p>Current Image Preview:</p>
+        <img [src]="imagePreview" alt="Current Image Preview"/>
       </div><br>
       <button type="submit"
         class="btn btn-primary">Submit</button>
