@@ -25,6 +25,7 @@ export class EditPostComponent {
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.postForm = this.formBuilder.group({
+      title: [''],
       text: ['', Validators.required],
     });
     this.webService.getPost(this.route.snapshot.params['id']).subscribe(postData => {

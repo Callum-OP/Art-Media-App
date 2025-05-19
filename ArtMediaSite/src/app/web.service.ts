@@ -82,6 +82,7 @@ export class WebService {
 
     this.userid = this.authService.getUserID();
     postData.append("user", this.userid);
+    postData.append("title", Post.title);
     postData.append("text", Post.text);
     postData.append("image", this.img);
 
@@ -108,6 +109,7 @@ export class WebService {
 
     this.userid = this.authService.getUserID();
     postData.append("user", this.userid);
+    postData.append("title", Post.title);
     postData.append("text", Post.text);
     postData.append("image", this.img);
 

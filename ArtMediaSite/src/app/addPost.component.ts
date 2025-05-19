@@ -24,6 +24,7 @@ export class AddPostComponent {
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.postForm = this.formBuilder.group({
+      title: [''],
       text: ['', Validators.required],
     });
   }

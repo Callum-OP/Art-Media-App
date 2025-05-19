@@ -48,6 +48,6 @@ import { Router } from '@angular/router';
       this.webService.deletePost(id)
       .subscribe( (response: any) => {
         this.router.navigate(['/posts']);
-      } )
+      })
     }
   }

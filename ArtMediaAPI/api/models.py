@@ -38,7 +38,8 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='post_user', on_delete=models.CASCADE) # Ensure when user is deleted, their posts are also deleted
     image = models.FileField(upload_to='uploads/', blank=True, validators=[validate_file]) # Image/video is optional
-    text = models.TextField()
+    title = models.TextField(default='My art') # Title of post
+    text = models.TextField() # Additional details about the post
     created_at = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
