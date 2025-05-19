@@ -29,7 +29,6 @@
     <div *ngFor="let comment of post.comments">
       <h4>{{ comment.user }}</h4>
       <p>{{ comment.text }}</p>
-      <button *ngIf="comment.user === user" (click) = "onEditComment(post.id, comment.id)">Edit</button>
-      <br><br>
+      <button *ngIf="comment.user === user" (click) = "onEditComment(post.id, comment.id)">Edit</button><button (click) = "onDeleteComment(comment.id)">Delete</button>
     </div>
 </div>

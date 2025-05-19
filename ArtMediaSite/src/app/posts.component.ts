@@ -48,7 +48,7 @@ import { Router } from '@angular/router';
       this.router.navigate(['/posts/' + postID + '/edit']);
     }
     
-    // Deletes the post currently being shown
+    // Deletes the selected post
     onDeletePost(postID: any) {
       this.webService.deletePost(postID)
       .subscribe( (response: any) => {
@@ -64,5 +64,13 @@ import { Router } from '@angular/router';
     // Take user to edit comment page
     onEditComment(postID: any, commentID: any) {
       this.router.navigate(['/posts/' + postID + '/comments/' + commentID + '/editComment']);
+    }
+
+    // Deletes the selected comment
+    onDeleteComment(commentID: any) {
+      this.webService.deleteComment(commentID)
+      .subscribe( (response: any) => {
+        this.router.navigate(['/posts']);
+      })
     }
   }
