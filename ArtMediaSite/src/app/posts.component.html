@@ -21,7 +21,7 @@
       <div>
         <img [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
       </div>
-      <button (click) = "onEdit(post.id)">Edit</button><button (click) = "onDelete(post.id)">Delete</button>
+      <button (click) = "onEditPost(post.id)">Edit</button><button (click) = "onDeletePost(post.id)">Delete</button>
       <br><br>
       <button (click) = "onAddComment(post.id)">Add Comment</button>
       <br>
@@ -29,6 +29,7 @@
     <div *ngFor="let comment of post.comments">
       <h4>{{ comment.user }}</h4>
       <p>{{ comment.text }}</p>
+      <button *ngIf="comment.user === user" (click) = "onEditComment(post.id, comment.id)">Edit</button>
       <br><br>
     </div>
 </div>

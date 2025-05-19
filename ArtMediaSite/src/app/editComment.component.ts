@@ -5,13 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'addComment',
-  templateUrl: './addComment.component.html',
-  styleUrls: ['./addComment.component.css']
+  selector: 'editComment',
+  templateUrl: './editComment.component.html',
+  styleUrls: ['./editComment.component.css']
 })
 
 // Class to add a comment to a post in the posts database
-export class AddCommentComponent {
+export class EditCommentComponent {
+  comment: any = [];
   commentForm: any;
   user: any;
 
@@ -26,11 +27,15 @@ export class AddCommentComponent {
     this.commentForm = this.formBuilder.group( {
       text: ['', Validators.required],
     });
+    this.webService.getComment(this.route.snapshot.params['postID'], this.route.snapshot.params['commentID']).subscribe(postData => {
+      this.comment = postData;
+      this.commentForm.patchValue(this.comment);
+    })
   }
 
   // Adds the comment to the database
   onSubmit() {
-    this.webService.postComment(this.commentForm.value, this.route.snapshot.params['postID'])
+    this.webService.editComment(this.commentForm.value, this.route.snapshot.params['postID'], this.route.snapshot.params['commentID'])
     .subscribe( (response: any) => {
       this.commentForm.reset(); 
     })

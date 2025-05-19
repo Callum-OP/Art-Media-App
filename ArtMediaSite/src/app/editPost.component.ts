@@ -28,7 +28,7 @@ export class EditPostComponent {
       title: [''],
       text: ['', Validators.required],
     });
-    this.webService.getPost(this.route.snapshot.params['id']).subscribe(postData => {
+    this.webService.getPost(this.route.snapshot.params['postID']).subscribe(postData => {
       this.post = postData;
       this.postForm.patchValue(this.post);
       this.imageFile = this.post.image;
@@ -54,7 +54,7 @@ export class EditPostComponent {
 
   // Edit the post in the database
   onSubmit() {
-    this.webService.editPost(this.imageFile, this.postForm.value, this.route.snapshot.params['id'])
+    this.webService.editPost(this.imageFile, this.postForm.value, this.route.snapshot.params['postID'])
     .subscribe( (response: any) => {
       this.postForm.reset(); 
       this.imageFile = null;

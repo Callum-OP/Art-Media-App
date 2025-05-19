@@ -9,9 +9,10 @@ import { ActivatedRoute } from '@angular/router';
 // Class for calling the api for the app
 export class WebService {
 
-  private postid: any;
+  private postID: any;
+  private commentID: any;
   private token: any
-  private userid: any
+  private userID: any
   img: any;
 
   constructor(private authService: AuthService, 
@@ -21,14 +22,15 @@ export class WebService {
 
   post_list: any;
 
-  getPostID() {
-    this.postid = this.route.snapshot.params['id'];
-    return this.postid;
+  getpostID() {
+    this.postID = this.route.snapshot.params['id'];
+    return this.postID;
   }
 
-  getUser(userid: any) {
+  // URL requests for IDs, tokens and user details
+  getUser(userID: any) {
     return this.http.get(
-      'http://127.0.0.1:8000/api/users/' + userid + '/');
+      'http://127.0.0.1:8000/api/users/' + userID + '/');
   }
 
   loginUser(user: any) {
@@ -52,14 +54,15 @@ export class WebService {
     return this.http.post('http://127.0.0.1:8000/api/users/', postData);
   }
 
+  // URL requests for posts
   getPosts() {
     return this.http.get(
       'http://127.0.0.1:8000/api/posts/');
   }
 
-  getPost(id: any) {
-    this.postid = id;
-    return this.http.get('http://127.0.0.1:8000/api/posts/' + id + '/');
+  getPost(postID: any) {
+    this.postID = postID;
+    return this.http.get('http://127.0.0.1:8000/api/posts/' + postID + '/');
   }
 
   postPost(Image:any, Post: any) {
@@ -80,8 +83,8 @@ export class WebService {
       this.img = "";
     }
 
-    this.userid = this.authService.getUserID();
-    postData.append("user", this.userid);
+    this.userID = this.authService.getUserID();
+    postData.append("user", this.userID);
     postData.append("title", Post.title);
     postData.append("text", Post.text);
     postData.append("image", this.img);
@@ -89,7 +92,7 @@ export class WebService {
     return this.http.post('http://127.0.0.1:8000/api/posts/', postData, requestOptions);
   }
 
-  editPost(Image:any, Post: any, id: any) {
+  editPost(Image:any, Post: any, postID: any) {
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
@@ -107,16 +110,16 @@ export class WebService {
       this.img = "";
     }
 
-    this.userid = this.authService.getUserID();
-    postData.append("user", this.userid);
+    this.userID = this.authService.getUserID();
+    postData.append("user", this.userID);
     postData.append("title", Post.title);
     postData.append("text", Post.text);
     postData.append("image", this.img);
 
-    return this.http.put('http://127.0.0.1:8000/api/posts/' + id + '/', postData, requestOptions);
+    return this.http.put('http://127.0.0.1:8000/api/posts/' + postID + '/', postData, requestOptions);
   }
 
-  deletePost(id: any) {
+  deletePost(postID: any) {
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
@@ -127,12 +130,19 @@ export class WebService {
       }), 
     };
 
-    return this.http.delete('http://127.0.0.1:8000/api/posts/' + id + '/', {
+    return this.http.delete('http://127.0.0.1:8000/api/posts/' + postID + '/', {
       headers: { Authorization: `Bearer ${this.token}` }
     });
   }
 
-  postComment(Comment: any, id: any) {
+  // URL requests for comments
+  getComment(postID: any, commentID: any) {
+    this.postID = postID;
+    this.commentID = commentID;
+    return this.http.get('http://127.0.0.1:8000/api/posts/' + postID + '/comments/' + commentID + '/');
+  }
+
+  postComment(Comment: any, postID: any) {
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
@@ -145,10 +155,31 @@ export class WebService {
 
     let postData = new FormData();
 
-    this.userid = this.authService.getUserID();
-    postData.append("user", this.userid);
+    this.userID = this.authService.getUserID();
+    postData.append("user", this.userID);
     postData.append("text", Comment.text);
 
-    return this.http.post('http://127.0.0.1:8000/api/posts/' + id + '/comments/', postData, requestOptions);
+    return this.http.post('http://127.0.0.1:8000/api/posts/' + postID + '/comments/', postData, requestOptions);
+  }
+
+  editComment(Comment: any, postID: any, commentID: any) {
+    this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }), 
+    };
+
+    let postData = new FormData();
+
+    this.userID = this.authService.getUserID();
+    postData.append("user", this.userID);
+    postData.append("post", postID);
+    postData.append("text", Comment.text);
+
+    return this.http.put('http://127.0.0.1:8000/api/posts/' + postID + '/comments/' + commentID  + '/', postData, requestOptions);
   }
 }

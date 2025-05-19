@@ -44,20 +44,25 @@ import { Router } from '@angular/router';
     }
 
     // Take user to edit post page
-    onEdit(id: any) {
-      this.router.navigate(['/posts/' + id + '/edit']);
+    onEditPost(postID: any) {
+      this.router.navigate(['/posts/' + postID + '/edit']);
     }
     
     // Deletes the post currently being shown
-    onDelete(id: any) {
-      this.webService.deletePost(id)
+    onDeletePost(postID: any) {
+      this.webService.deletePost(postID)
       .subscribe( (response: any) => {
         this.router.navigate(['/posts']);
       })
     }
 
     // Take user to add comment page
-    onAddComment(id: any) {
-      this.router.navigate(['/posts/' + id + '/addComment']);
+    onAddComment(postID: any) {
+      this.router.navigate(['/posts/' + postID + '/addComment']);
+    }
+
+    // Take user to edit comment page
+    onEditComment(postID: any, commentID: any) {
+      this.router.navigate(['/posts/' + postID + '/comments/' + commentID + '/editComment']);
     }
   }
