@@ -37,8 +37,8 @@ export class LoginComponent {
     this.webService.loginUser(this.loginForm.value)
     .subscribe({
       next: (response: any) => {
-        this.authService.setUserID(response.body.id);
-        this.authService.setUsername(response.body.username);
+        this.authService.setUserID(response.id);
+        this.authService.setUsername(response.username);
         this.authService.setToken(this.cookieService.get('csrftoken'));
         return window.location.href='http://localhost:4200/posts/';
       },

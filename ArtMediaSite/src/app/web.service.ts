@@ -38,7 +38,7 @@ export class WebService {
     postData.append("username", user.username);
     postData.append("password", user.password);
 
-    return this.http.post('http://127.0.0.1:8000/api/login/', postData, { withCredentials: true, observe: 'response' as 'response' })
+    return this.http.post('http://127.0.0.1:8000/api/login/', postData)
   }
 
   logoutUser() {

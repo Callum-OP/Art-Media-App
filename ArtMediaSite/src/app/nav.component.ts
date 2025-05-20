@@ -56,6 +56,7 @@ export class NavComponent {
   logout() {
     this.authService.logout();
     this.webService.logoutUser();
+    return window.location.reload();
   }
 
     // Search bar that goes to page with all posts relating to what user searched for

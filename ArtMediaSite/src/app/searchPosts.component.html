@@ -19,7 +19,7 @@
       <div>
         <img [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
       </div>
-      <button class="button" (click) = "onEditPost(post.id)">Edit</button><button class="button" (click) = "onDeletePost(post.id)">Delete</button>
+      <button class="button" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="button" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
       <br><br>
       <button class="button" (click) = "onAddComment(post.id)">Add Comment</button>
       <br>
