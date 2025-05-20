@@ -8,6 +8,7 @@ from .views import SpecificComment
 from .views import UserList
 from .views import SpecificUser
 from .views import Login
+from .views import SearchPosts
 
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path('posts/<str:fk>/comments/', CommentList.as_view(), name='comment-list'), # Creating a comment
     path('posts/<str:fk>/comments/<str:pk>/', SpecificComment.as_view(), name='comment'), # Viewing, editing and deleting a comment
     path('posts/<str:pk>/image/', Image.as_view(), name='image'), # Viewing an image
+    path('posts/search/<str:search>/', SearchPosts.as_view(), name='search'), # Search posts and filter results
     path('users/', UserList.as_view(), name='user-list'), # Creating a user account
     path('users/<str:pk>/', SpecificUser.as_view(), name='user'), # Viewing a specific user account
     path('login/', Login.as_view(), name='login'), # Logging and out of a user account

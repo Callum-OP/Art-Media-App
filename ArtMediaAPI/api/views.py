@@ -1,18 +1,17 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework.response import Response # For sending a response
 from rest_framework import status
-from django.shortcuts import render
-from django.conf import settings
+from django.shortcuts import render # For showing backend html pages
 from .models import Post
 from .models import Comment
+from .models import CustomUser
 from .serializers import UserSerializer
 from .serializers import PostSerializer
 from .serializers import CommentSerializer
-from django.middleware.csrf import get_token
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import CustomUser
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout # For login authentication
+from django.db.models import Q # For search functionality
 
 
 class Login(APIView):
@@ -163,3 +162,10 @@ class SpecificComment(APIView):
             return Response({"message": "Comment deleted"}, status=status.HTTP_204_NO_CONTENT)
         except Comment.DoesNotExist:
             return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class SearchPosts(APIView):
+        # Search and filter posts by title or text contained in post
+        def get(self, request, search):
+            posts = Post.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+            serializer = PostSerializer(posts, many=True)
+            return Response(serializer.data)
