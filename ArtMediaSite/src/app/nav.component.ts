@@ -61,7 +61,7 @@ export class NavComponent {
     // Search bar that goes to page with all posts relating to what user searched for
     searchBar(search: any) {
       if (search != '') {
-        return this.router.navigate(['/posts/search/' + search]);
+        return window.location.href='http://localhost:4200/posts/search/' + search;
       } else {
         return this.router.navigate(['/posts']);
       }
