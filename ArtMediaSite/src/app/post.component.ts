@@ -4,36 +4,37 @@ import { AuthService } from './authservice.component';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'searchPosts',
-  templateUrl: './searchPosts.component.html',
-  styleUrls: ['./searchPosts.component.css']
+  selector: 'post',
+  templateUrl: './post.component.html',
+  styleUrls: ['./post.component.css']
 })
   
-// Class for showing posts matching search results
-export class SearchPostsComponent {
+// Class for showing a specific post
+export class PostComponent {
 
-  posts: any = [];
+  post: any = [];
   comments: any = [];
-  search: any = "";
   user: any = "";
   username: any = "";
   token: any = "";
+  postID: any = "";
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
     private route: ActivatedRoute,
     private router: Router) {}
 
-  // When the app starts user details, tokens and posts matching search results are gathered
+  // When the app starts user details, tokens and the post is found
   ngOnInit() {
     this.user = this.authService.getUserID();
     this.username = this.authService.getUsername();
     this.token = this.authService.getToken();
-    // Get all posts
-    this.search = this.route.snapshot.params['search'];
-    this.webService.searchPosts(this.search).subscribe({
+    this.postID = this.route.snapshot.params['postID'];
+   
+    // Get post
+    this.webService.getPost(this.postID).subscribe({
         next: (response: any) => {
-          this.posts = response || [];
+          this.post = response || {};
         },
         error: (err) => console.error("Error fetching posts:", err)
       });
@@ -56,10 +57,6 @@ export class SearchPostsComponent {
       this.router.navigate(['/posts']);
       window.location.reload();
     })
-  }
-
-  refresh() {
-    window.location.reload();
   }
 
   // Take user to add comment page

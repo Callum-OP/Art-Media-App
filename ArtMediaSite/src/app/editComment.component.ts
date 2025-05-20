@@ -10,7 +10,7 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./editComment.component.css']
 })
 
-// Class to add a comment to a post in the posts database
+// Class to edit a comment to a post in the posts database
 export class EditCommentComponent {
   comment: any = [];
   commentForm: any;
@@ -22,7 +22,7 @@ export class EditCommentComponent {
     private router: Router,
     private formBuilder: FormBuilder) {}
 
-  // On startup the add comment form is set
+  // On startup the edit comment form is set
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.commentForm = this.formBuilder.group( {
@@ -34,7 +34,7 @@ export class EditCommentComponent {
     })
   }
 
-  // Adds the comment to the database
+  // Edits the comment in the database
   onSubmit() {
     this.webService.editComment(this.commentForm.value, this.route.snapshot.params['postID'], this.route.snapshot.params['commentID'])
     .subscribe( (response: any) => {
@@ -43,7 +43,7 @@ export class EditCommentComponent {
     })
   }
 
-  // Validation for the add comment form
+  // Validation for the edit comment form
   isInvalid(control: any) {
     return this.commentForm.controls[control].invalid && this.commentForm.controls[control].touched;
   }

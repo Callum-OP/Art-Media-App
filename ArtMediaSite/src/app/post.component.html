@@ -1,0 +1,31 @@
+<div>
+  <h2>Art Share</h2>
+  <ng-container *ngIf = "authService.isAuthenticated(); else loggedOut">
+    Hello {{ username }}
+    <br><br>
+    <button class="button" (click) = "onAddPost()">Add New Post</button><br><br>
+  </ng-container>
+  <ng-template #loggedOut>
+    Hello
+    <h5>Login to add your own posts</h5><br>
+  </ng-template>
+  <div class="post">
+    <div style= "padding: 10px;">
+      <h3> {{ post.user }} </h3>
+      <h4> {{ post.title }} </h4>
+      <p> {{ post.text }} </p>
+    </div>
+    <div>
+      <img [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
+    </div>
+    <button class="button" (click) = "onEditPost(post.id)">Edit</button><button class="button" (click) = "onDeletePost(post.id)">Delete</button>
+    <br><br>
+    <button class="button" (click) = "onAddComment(post.id)">Add Comment</button>
+    <br>
+  </div>
+  <div *ngFor="let comment of post.comments">
+    <h4>{{ comment.user }}</h4>
+    <p>{{ comment.text }}</p>
+    <button class="button" *ngIf="comment.user === user" (click) = "onEditComment(post.id, comment.id)">Edit</button><button class="button" (click) = "onDeleteComment(comment.id)">Delete</button>
+  </div>
+</div>

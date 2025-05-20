@@ -12,6 +12,7 @@ import { NavComponent } from './nav.component';
 
 import { LoginComponent } from './login.component';
 import { PostsComponent } from './posts.component';
+import { PostComponent } from './post.component';
 import { AddPostComponent } from './addPost.component';
 import { EditPostComponent } from './editPost.component';
 import { SearchPostsComponent } from './searchPosts.component';
@@ -21,6 +22,7 @@ import { EditCommentComponent } from './editComment.component';
 const routes = [
   { path: 'login', component: LoginComponent },
   { path: 'posts', component: PostsComponent },
+  { path: 'posts/:postID', component: PostComponent },
   { path: 'addPost', component: AddPostComponent },
   { path: 'posts/:postID/edit', component: EditPostComponent },
   { path: 'posts/search/:search', component: SearchPostsComponent },
@@ -30,7 +32,7 @@ const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, NavComponent, LoginComponent, PostsComponent, AddPostComponent, EditPostComponent, SearchPostsComponent, AddCommentComponent, EditCommentComponent,
+    AppComponent, NavComponent, LoginComponent, PostsComponent, PostComponent, AddPostComponent, EditPostComponent, SearchPostsComponent, AddCommentComponent, EditCommentComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, RouterModule,
