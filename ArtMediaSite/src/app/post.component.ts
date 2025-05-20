@@ -40,6 +40,17 @@ export class PostComponent {
       });
   }
 
+    // Check if user is logged in
+    loggedIn() {
+      let result = "";
+      this.authService.isAuthenticated().subscribe({next: (response: any) => {result = response;}});
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
   // Take user to add post page
   onAddPost() {
     this.router.navigate(['/addPost']);

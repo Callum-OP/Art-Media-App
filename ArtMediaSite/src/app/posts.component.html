@@ -1,13 +1,11 @@
 <div>
   <h2>Art Share</h2>
-  <ng-container *ngIf = "authService.isAuthenticated(); else loggedOut">
-    Hello {{ username }}
-    <br><br>
-    <button class="button" (click) = "onAddPost()">Add New Post</button><br><br>
+  <ng-container *ngIf = "loggedIn() == true; else loggedOut">
+    <p>Hello {{ username }}</p>
+    <button class="button" (click) = "onAddPost()">Add New Post</button>
   </ng-container>
   <ng-template #loggedOut>
-    Hello
-    <h5>Login to add your own posts</h5><br>
+    <p>Login to add your own posts</p>
   </ng-template>
   <div *ngFor = "let post of posts">
     <div class="post">
@@ -21,12 +19,14 @@
       </div>
       <button class="button" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="button" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
       <br><br>
-      <button class="button" (click) = "onAddComment(post.id)">Add Comment</button>
+      <button class="button" *ngIf = "loggedIn() == true" (click) = "onAddComment(post.id)">Add Comment</button>
       <br>
     </div>
     <div *ngFor="let comment of post.comments">
       <h4>{{ comment.user }}</h4>
       <p>{{ comment.text }}</p>
-      <button class="button" *ngIf="comment.user === user" (click) = "onEditComment(post.id, comment.id)">Edit</button><button class="button" (click) = "onDeleteComment(comment.id)">Delete</button>
+      <div *ngIf="comment.user === user">
+        <button class="button" (click) = "onEditComment(post.id, comment.id)">Edit</button><button class="button" (click) = "onDeleteComment(comment.id)">Delete</button>
+      </div>
     </div>
 </div>

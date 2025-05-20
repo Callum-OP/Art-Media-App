@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   public isAuthenticated(): Observable<boolean> {
-    if (localStorage.getItem('user') != '' && localStorage.getItem('token') != '') {
+    if (localStorage.getItem('user') && localStorage.getItem('token')) {
       return of(true);
     }
     else {

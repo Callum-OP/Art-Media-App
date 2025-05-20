@@ -99,9 +99,12 @@ class Image(APIView):
 class SpecificPost(APIView):
     # View a post
     def get(self, request, pk):
-        post = Post.objects.get(pk=pk)
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
+        try:
+            post = Post.objects.get(pk=pk)
+            serializer = PostSerializer(post)
+            return Response(serializer.data)
+        except Post.DoesNotExist:
+            return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
 
     # Edit a post
     @permission_classes([IsAuthenticated]) # Logged in users only
@@ -150,10 +153,13 @@ class CommentList(APIView):
 class SpecificComment(APIView):
     # View a comment
     def get(self, request, fk, pk):
-        comment = Comment.objects.get(pk=pk)
-        serializer = CommentSerializer(comment)
-        return Response(serializer.data)
-
+        try:
+            comment = Comment.objects.get(pk=pk)
+            serializer = CommentSerializer(comment)
+            return Response(serializer.data)
+        except Comment.DoesNotExist:
+            return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+        
     # Edit a comment
     @permission_classes([IsAuthenticated]) # Logged in users only
     def put(self, request, fk, pk):
