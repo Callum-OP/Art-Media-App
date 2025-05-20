@@ -57,4 +57,13 @@ export class NavComponent {
     this.authService.logout();
     this.webService.logoutUser();
   }
+
+    // Search bar that goes to page with all posts relating to what user searched for
+    searchBar(search: any) {
+      if (search != '') {
+        return this.router.navigate(['/posts/search/' + search]);
+      } else {
+        return this.router.navigate(['/posts']);
+      }
+    }
 }

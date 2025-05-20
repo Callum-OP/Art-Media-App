@@ -66,6 +66,7 @@ export class WebService {
   }
 
   postPost(Image:any, Post: any) {
+    // Put token in header of request
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
@@ -93,6 +94,7 @@ export class WebService {
   }
 
   editPost(Image:any, Post: any, postID: any) {
+    // Put token in header of request
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
@@ -120,6 +122,7 @@ export class WebService {
   }
 
   deletePost(postID: any) {
+    // Put token in header of request
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
@@ -133,6 +136,11 @@ export class WebService {
     return this.http.delete('http://127.0.0.1:8000/api/posts/' + postID + '/', requestOptions);
   }
 
+  searchPosts(search: any) {
+    return this.http.get(
+      'http://127.0.0.1:8000/api/posts/search/' + search  + '/');
+  }
+
   // URL requests for comments
   getComment(postID: any, commentID: any) {
     this.postID = postID;
@@ -142,6 +150,7 @@ export class WebService {
 
   postComment(Comment: any, postID: any) {
     this.token = this.authService.getToken();
+    // Put token in header of request
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
     }
@@ -161,6 +170,7 @@ export class WebService {
   }
 
   editComment(Comment: any, postID: any, commentID: any) {
+    // Put token in header of request
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');
@@ -184,6 +194,7 @@ export class WebService {
   deleteComment(commentID: any) {
     this.postID = this.getpostID;
 
+    // Put token in header of request
     this.token = this.authService.getToken();
     if (!this.token) {
       throw new Error('Unauthenticated, CSRF token missing');

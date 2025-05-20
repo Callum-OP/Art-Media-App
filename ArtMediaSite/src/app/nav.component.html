@@ -1,10 +1,18 @@
 <div class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <ul class="navbar-nav" style = "padding-left: 15px;">
-      <li class="nav-item">
+      <li class="nav-item" style = "padding-right: 10px">
         <img routerLink="/" class="rounded mx-auto d-block" src={{logoImagePath}} alt="thumbnail image of the item" width="120" height="40" style = "margin: auto; cursor: pointer"/>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" style = "padding-right: 20px">
         <a routerLink="/posts" class="nav-link">Posts</a>
+      </li>
+      <li class="nav-item" style = "padding-right: 10px">
+        <input type="search" class="form-control" placeholder="Search for posts" #filter>
+      </li>
+      <li style = "padding-right: 10px">
+        <button (click)="searchBar(filter.value)" class="btn btn-outline-light">
+            Search
+        </button>
       </li>
     </ul>
   

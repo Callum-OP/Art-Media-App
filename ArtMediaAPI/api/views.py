@@ -118,6 +118,13 @@ class SpecificPost(APIView):
             return Response({"message": "Post deleted"}, status=status.HTTP_204_NO_CONTENT)
         except Post.DoesNotExist:
             return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+class SearchPosts(APIView):
+        # Search and filter posts by title or text contained in post
+        def get(self, request, search):
+            posts = Post.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+            serializer = PostSerializer(posts, many=True)
+            return Response(serializer.data)
 
 
 class CommentList(APIView):
@@ -162,10 +169,3 @@ class SpecificComment(APIView):
             return Response({"message": "Comment deleted"}, status=status.HTTP_204_NO_CONTENT)
         except Comment.DoesNotExist:
             return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
-
-class SearchPosts(APIView):
-        # Search and filter posts by title or text contained in post
-        def get(self, request, search):
-            posts = Post.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
-            serializer = PostSerializer(posts, many=True)
-            return Response(serializer.data)
