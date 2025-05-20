@@ -12,7 +12,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login, logout # For login authentication
 from django.db.models import Q # For search functionality
-
+from django.contrib.auth.hashers import make_password # For hashing passwords
 
 class Login(APIView):
     # Log out of user account
@@ -48,7 +48,10 @@ class UserList(APIView):
     def post(self, request):
         # Ensure username is unique
         if not CustomUser.objects.filter(username=request.POST.get('username')).exists():
-            serializer = UserSerializer(data=request.data)
+            data = request.data.copy()
+            # Hash password
+            data['password'] = make_password(data.get('password'))
+            serializer = UserSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({"message": "Account created"}, status=status.HTTP_201_CREATED)
@@ -58,11 +61,12 @@ class UserList(APIView):
 
 
 class SpecificUser(APIView):
-    # View all users
+    # View specific user
     def get(self, request, pk):
-        users = CustomUser.objects.get(pk=pk)
-        serializer = UserSerializer(users)
+        user = CustomUser.objects.get(pk=pk)
+        serializer = UserSerializer(user)
         return Response(serializer.data)
+    
 
 class PostList(APIView):
     # View all posts

@@ -11,7 +11,8 @@ from django.db.models.signals import post_delete
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=255, unique=True)
-    email = models.EmailField()
+    password = models.CharField(max_length=128, verbose_name='password')
+    email = models.EmailField(max_length=254)
     created_at = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
