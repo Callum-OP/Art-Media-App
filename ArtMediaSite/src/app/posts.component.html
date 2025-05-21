@@ -2,14 +2,15 @@
   <h2>Art Share</h2>
   <ng-container *ngIf = "loggedIn() == true; else loggedOut">
     <p>Hello {{ username }}</p>
-    <button class="button" (click) = "onAddPost()">Add New Post</button>
+    <button class="btn btn-outline-light" (click) = "onAddPost()">Add New Post</button>
+    <br><br>
   </ng-container>
   <ng-template #loggedOut>
     <p>Login to add your own posts</p>
   </ng-template>
   <div class="row">
     <div class="col" *ngFor = "let post of posts">
-      <div class="card" [routerLink] = "['/posts/', post.id]">
+      <div class="card bg-transparent" [routerLink] = "['/posts/', post.id]">
         <div class="card-img-top">
           <img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
         </div>
@@ -17,7 +18,8 @@
           <h5> {{ post.title }} </h5>
           <p> {{ post.text }} </p>
         </div>
-        <button class="btn" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
+        <button class="btn btn-outline-light" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
+      </div>
     </div>
   </div>
 </div>

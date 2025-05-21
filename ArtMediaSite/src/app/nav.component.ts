@@ -6,7 +6,7 @@ import { AuthService } from './authservice.component';
 @Component({
   selector: 'navigation',
   templateUrl: './nav.component.html',
-  styleUrls: []
+  styleUrls: ['./nav.component.css']
 })
 
 // Class that controls the navbar for the site

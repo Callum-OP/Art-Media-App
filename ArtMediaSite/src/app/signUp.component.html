@@ -1,5 +1,5 @@
-<div>
-  <h3>Login to your account</h3>
+<div class="content">
+  <h3>Enter your details to create an account</h3>
   <form [formGroup] = "signUpForm" (ngSubmit)="onSubmit()">
     <div>
       <label for="username">Username*</label><br>
@@ -22,6 +22,6 @@
     <span *ngIf="isIncomplete()">
       You must complete all fields
     </span>
-    <button *ngIf="!isIncomplete()" type="submit">Login</button>
+    <button class="btn btn-primary" *ngIf="!isIncomplete()" type="submit">Create Account</button>
   </form><br>
 </div>

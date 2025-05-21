@@ -1,4 +1,4 @@
-<div>
+<div class="content">
   <h3>Login to your account</h3>
   <form [formGroup] = "loginForm" (ngSubmit)="onSubmit()">
     <div>
@@ -16,6 +16,6 @@
     <span *ngIf="isIncomplete()">
       You must complete all fields
     </span>
-    <button *ngIf="!isIncomplete()" type="submit">Login</button>
+    <button class="btn btn-primary" *ngIf="!isIncomplete()" type="submit">Login</button>
   </form><br>
 </div>

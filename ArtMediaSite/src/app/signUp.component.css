@@ -1,1 +1,12 @@
+* {
+    background-color: #262933;
+    color: #f3f0f0;
+}
+
+.content {
+    margin: 3px;
+    margin-left: 13.6px;
+    padding: 5px;
+}
+
 .error { background-color: #fff0f0; }

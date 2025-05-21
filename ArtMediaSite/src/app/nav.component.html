@@ -1,4 +1,4 @@
-<div class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+<div class="navbar navbar-expand-sm fixed-top">
     <ul class="navbar-nav" style = "padding-left: 15px;">
       <li class="nav-item" style = "padding-right: 10px">
         <img routerLink="/" class="rounded mx-auto d-block" src={{logoImagePath}} alt="thumbnail image of the item" width="120" height="40" style = "margin: auto; cursor: pointer"/>
@@ -7,10 +7,10 @@
         <a routerLink="/posts" class="nav-link">Posts</a>
       </li>
       <li class="nav-item" style = "padding-right: 10px">
-        <input type="search" class="form-control" placeholder="Search for posts" #filter>
+        <input type="search" class="search form-control" placeholder="Search for posts" #filter>
       </li>
       <li style = "padding-right: 10px">
-        <button (click)="searchBar(filter.value)" class="btn btn-outline-light">
+        <button class="btn btn-outline-light" (click)="searchBar(filter.value)">
             Search
         </button>
       </li>
@@ -18,7 +18,7 @@
   
     <div class="form-inline ms-auto"
       style = "padding-right: 10px">
-      <button (click) = "loginLogoutButton()" class="btn btn-outline-light">{{ buttonName }}</button>
-      <button *ngIf = "!loggedIn" (click) = "register()" class="btn btn-outline-light">Signup</button>
+      <button class="btn btn-outline-light" (click) = "loginLogoutButton()">{{ buttonName }}</button>
+      <button class="btn btn-outline-light" *ngIf = "!loggedIn" (click) = "register()">Signup</button>
     </div>
   </div>
