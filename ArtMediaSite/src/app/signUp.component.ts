@@ -7,14 +7,14 @@ import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
-  selector: 'login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'signUp',
+  templateUrl: './signUp.component.html',
+  styleUrls: ['./signUp.component.css']
 })
 
-// Class to login a user
-export class LoginComponent {
-  loginForm: any;
+// Class to create a new user
+export class SignUpComponent {
+  signUpForm: any;
   user: any;
 
   constructor(private authService: AuthService, 
@@ -25,16 +25,17 @@ export class LoginComponent {
 
   // On startup the add user form is set
   ngOnInit() {
-  this.loginForm = this.formBuilder.group( {
+  this.signUpForm = this.formBuilder.group( {
     username: ['', Validators.required],
+    email: ['', Validators.required],
     password: ['', Validators.required],
   });
 
   }
 
-  // Checks if the user exists and then logs them in if they do
+  // Creates new user and logs them in
   onSubmit() {
-    this.webService.loginUser(this.loginForm.value)
+    this.webService.registerUser(this.signUpForm.value)
     .subscribe({
       next: (response: any) => {
         this.authService.setUserID(response.id);
@@ -42,18 +43,18 @@ export class LoginComponent {
         this.authService.setToken(this.cookieService.get('csrftoken'));
         return window.location.href='http://localhost:4200/posts/';
       },
-      error: (err) => console.error("Error logging in user:", err)
+      error: (err) => console.error("Error creating user:", err)
     });
   }
 
   // Validation for the user form
   isInvalid(control: any) {
-    return this.loginForm.controls[control].invalid && this.loginForm.controls[control].touched;
+    return this.signUpForm.controls[control].invalid && this.signUpForm.controls[control].touched;
   }
   isUnTouched() {
-    return this.loginForm.controls.username.pristine || this.loginForm.controls.password.pristine;
+    return this.signUpForm.controls.username.pristine || this.signUpForm.controls.email.pristine || this.signUpForm.controls.password.pristine;
   }
   isIncomplete(){
-    return this.isInvalid('username') || this.isInvalid('password') || this.isUnTouched();
+    return this.isInvalid('username') || this.isInvalid('email') || this.isInvalid('password') || this.isUnTouched();
   }
 }

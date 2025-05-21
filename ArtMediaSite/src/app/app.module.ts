@@ -11,6 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavComponent } from './nav.component';
 
 import { LoginComponent } from './login.component';
+import { SignUpComponent } from './signUp.component';
 import { PostsComponent } from './posts.component';
 import { PostComponent } from './post.component';
 import { AddPostComponent } from './addPost.component';
@@ -21,6 +22,7 @@ import { EditCommentComponent } from './editComment.component';
 
 const routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: SignUpComponent },
   { path: 'posts', component: PostsComponent },
   { path: 'posts/:postID', component: PostComponent },
   { path: 'addPost', component: AddPostComponent },
@@ -32,7 +34,7 @@ const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, NavComponent, LoginComponent, PostsComponent, PostComponent, AddPostComponent, EditPostComponent, SearchPostsComponent, AddCommentComponent, EditCommentComponent,
+    AppComponent, NavComponent, LoginComponent, SignUpComponent, PostsComponent, PostComponent, AddPostComponent, EditPostComponent, SearchPostsComponent, AddCommentComponent, EditCommentComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, RouterModule,

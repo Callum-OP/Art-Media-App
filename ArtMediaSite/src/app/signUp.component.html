@@ -1,0 +1,27 @@
+<div>
+  <h3>Login to your account</h3>
+  <form [formGroup] = "signUpForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="username">Username*</label><br>
+      <input type="text" name="username" id="username" placeholder="A name for your account"
+        class="form-control" formControlName="username"
+        [ngClass]="{ 'error' : isInvalid('username') }">
+    </div><br>
+    <div>
+      <label for="email">Email*</label><br>
+      <input type="email" name="email" id="email" placeholder="Your email address"
+        class="form-control" formControlName="email"
+        [ngClass]="{ 'error' : isInvalid('email') }">
+    </div><br>
+    <div>
+      <label for="password">Password*</label><br>
+      <input type="password" name="password" id="password" placeholder="A password to protect your account"
+        class="form-control" formControlName="password"
+        [ngClass]="{ 'error' : isInvalid('password') }">
+    </div><br>
+    <span *ngIf="isIncomplete()">
+      You must complete all fields
+    </span>
+    <button *ngIf="!isIncomplete()" type="submit">Login</button>
+  </form><br>
+</div>

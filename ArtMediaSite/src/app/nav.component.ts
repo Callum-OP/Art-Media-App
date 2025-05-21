@@ -49,6 +49,10 @@ export class NavComponent {
     }
   }
 
+  register() {
+    return this.router.navigate(['/register']);
+  }
+
   login() {
     return this.router.navigate(['/login']);
   }

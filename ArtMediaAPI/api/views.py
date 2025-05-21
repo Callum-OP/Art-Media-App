@@ -29,7 +29,7 @@ class Login(APIView):
 
         if user is not None:
             login(request, user)
-            # After login a crsf token will be available within cookies 
+            # After login a csrf token will be available within cookies 
             # for use in accessing views that are for logged in users only
             data = Response({'id': user.id, 'username':  user.username})
             return data
@@ -54,7 +54,20 @@ class UserList(APIView):
             serializer = UserSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
-                return Response({"message": "Account created"}, status=status.HTTP_201_CREATED)
+                # Check user now exists
+                username = request.POST.get('username')
+                password = request.POST.get('password')
+                user = authenticate(request, username=username, password=password)
+                print(user)
+                if user is not None:
+                    # Login user
+                    login(request, user)
+                    # After login a csrf token will be available within cookies 
+                    # for use in accessing views that are for logged in users only
+                    data = Response({'id': user.id, 'username':  user.username}, status=status.HTTP_201_CREATED)
+                    return data
+                else:
+                    return Response("Invalid username or password", status=401)
             return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
