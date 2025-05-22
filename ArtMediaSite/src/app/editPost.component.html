@@ -1,6 +1,9 @@
 <div class="content">
-  <h2>Edit post</h2>
-  <div class="form">
+  <ng-template #loggedOut>
+    <p>Not logged in</p>
+  </ng-template>
+  <div *ngIf = "isCorrectUser == true; else loggedOut" class="form">
+    <h2>Edit post</h2>
     <form [formGroup] = "postForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="title">Title</label><br>

@@ -15,6 +15,7 @@ export class EditCommentComponent {
   comment: any = [];
   commentForm: any;
   user: any;
+  isCorrectUser: boolean = false;
 
   constructor(private webService: WebService, 
     private authService: AuthService,
@@ -31,8 +32,13 @@ export class EditCommentComponent {
     this.webService.getComment(this.route.snapshot.params['postID'], this.route.snapshot.params['commentID']).subscribe(postData => {
       this.comment = postData;
       this.commentForm.patchValue(this.comment);
+      // Check if user in comment matches user editing comment
+      // If not, send them to posts page
+      if (this.authService.checkUser(this.comment.user)) {
+        this.isCorrectUser = true;
+      }
     })
-  }
+  } 
 
   // Edits the comment in the database
   onSubmit() {

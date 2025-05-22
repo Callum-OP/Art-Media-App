@@ -38,15 +38,9 @@ export class PostsComponent {
   }
 
   // Check if user is logged in
-  loggedIn() {
-    let result = "";
-    this.authService.isAuthenticated().subscribe({next: (response: any) => {result = response;}});
-    if (result) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  isloggedIn() {
+    return this.authService.loggedIn();
+  }  
 
   // Take user to add post page
   onAddPost() {

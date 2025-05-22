@@ -14,6 +14,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class AddPostComponent {
   postForm: any;
   user: any;
+  isLoggedIn: boolean = false;
 
   constructor(private webService: WebService, 
     private authService: AuthService,
@@ -28,6 +29,12 @@ export class AddPostComponent {
       title: [''],
       text: ['', Validators.required],
     });
+    // Check if user is logged in, if not send them to posts page
+    if (this.authService.loggedIn()) {
+      this.isLoggedIn = true;
+    } else {
+      this.router.navigate(['/posts']);
+    }
   }
 
   // Grabs file inputted by user and stores it in imagefile

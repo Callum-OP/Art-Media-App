@@ -15,6 +15,7 @@ export class EditPostComponent {
   post: any = [];
   postForm: any;
   user: any;
+  isCorrectUser: boolean = false;
 
   constructor(private webService: WebService, 
     private authService: AuthService,
@@ -29,11 +30,16 @@ export class EditPostComponent {
       title: [''],
       text: ['', Validators.required],
     });
-    this.webService.getPost(this.route.snapshot.params['postID']).subscribe(postData => {
-      this.post = postData;
+    this.webService.getPost(this.route.snapshot.params['postID']).subscribe(response => {
+      this.post = response;
       this.postForm.patchValue(this.post);
       this.imageFile = this.post.image;
       this.imagePreview = 'http://127.0.0.1:8000/' + this.post.image;
+      // Check if user in post matches user editing post
+      // If not, send them to posts page
+      if (this.authService.checkUser(this.post.user)) {
+        this.isCorrectUser = true;
+      }
     });
   }
 

@@ -1,6 +1,9 @@
 <div class="content">
-  <h2>Add comment</h2>
-  <div class="form">
+  <ng-template #loggedOut>
+    <p>Not logged in</p>
+  </ng-template>
+  <div *ngIf = "isLoggedIn == true; else loggedOut" class="form">
+    <h2>Add comment</h2>
     <form [formGroup] = "commentForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="text">Text</label><br>

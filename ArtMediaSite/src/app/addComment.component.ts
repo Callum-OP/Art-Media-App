@@ -14,6 +14,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class AddCommentComponent {
   commentForm: any;
   user: any;
+  isLoggedIn: boolean = false;
 
   constructor(private webService: WebService, 
     private authService: AuthService,
@@ -27,6 +28,12 @@ export class AddCommentComponent {
     this.commentForm = this.formBuilder.group( {
       text: ['', Validators.required],
     });
+    // Check if user is logged in, if not send them to posts page
+    if (this.authService.loggedIn()) {
+      this.isLoggedIn = true;
+    } else {
+      this.router.navigate(['/posts']);
+    }
   }
 
   // Adds the comment to the database

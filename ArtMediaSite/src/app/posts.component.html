@@ -1,7 +1,7 @@
 <div class="content">
   <h2>Art Share</h2>
-  <ng-container *ngIf = "loggedIn() == true; else loggedOut">
-    <p>Hello {{ username }}</p>
+  <ng-container *ngIf = "isloggedIn() == true; else loggedOut">
+    <p>Hello {{username}}</p>
     <button class="btn btn-outline-light" (click) = "onAddPost()">Add New Post</button>
     <br><br>
   </ng-container>
@@ -15,8 +15,8 @@
           <img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
         </div>
         <div class="card-block">
-          <h5> {{ post.title }} </h5>
-          <p> {{ post.text }} </p>
+          <h5> {{post.title}} </h5>
+          <p> {{post.text}} </p>
         </div>
         <button class="btn btn-outline-light" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
       </div>
