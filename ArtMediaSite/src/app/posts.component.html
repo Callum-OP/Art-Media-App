@@ -18,7 +18,6 @@
           <h5> {{post.title}} </h5>
           <p> {{post.text}} </p>
         </div>
-        <button class="btn btn-outline-light" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
       </div>
     </div>
   </div>

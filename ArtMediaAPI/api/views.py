@@ -1,3 +1,4 @@
+from uuid import UUID
 from rest_framework.views import APIView
 from rest_framework.response import Response # For sending a response
 from rest_framework import status
@@ -13,6 +14,13 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login, logout # For login authentication
 from django.db.models import Q # For search functionality
 from django.contrib.auth.hashers import make_password # For hashing passwords
+
+def checkID(pk):
+    try:
+        return UUID(pk)
+    except ValueError:
+        return None
+
 
 class Login(APIView):
     # Log out of user account
@@ -38,12 +46,6 @@ class Login(APIView):
 
 
 class UserList(APIView):
-    # View all users
-    def get(self, request):
-        users = CustomUser.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
-
     # Create a new user
     def post(self, request):
         # Ensure username is unique
@@ -76,9 +78,17 @@ class UserList(APIView):
 class SpecificUser(APIView):
     # View specific user
     def get(self, request, pk):
-        user = CustomUser.objects.get(pk=pk)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+        # Check if request has valid id
+        pk = checkID(pk)
+        if pk is None:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if user exists
+        try:
+            user = CustomUser.objects.get(pk=pk)
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        except CustomUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     
 
 class PostList(APIView):
@@ -102,18 +112,16 @@ class PostList(APIView):
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class Image(APIView):
-    # View an image
-    def get(self, request, pk):
-        post = Post.objects.get(pk=pk)
-        return render(request, 'image.html', {'post': post})
-
-
 class SpecificPost(APIView):
     # View a post
     def get(self, request, pk):
+        # Check if request has valid id
+        postID = checkID(pk)
+        if postID is None:
+            return Response({"error": "Invalid post ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if post exists, then return it
         try:
-            post = Post.objects.get(pk=pk)
+            post = Post.objects.get(pk=postID)
             serializer = PostSerializer(post)
             return Response(serializer.data)
         except Post.DoesNotExist:
@@ -122,18 +130,31 @@ class SpecificPost(APIView):
     # Edit a post
     @permission_classes([IsAuthenticated]) # Logged in users only
     def put(self, request, pk):
-        post = Post.objects.get(pk=pk)
-        serializer = PostSerializer(post, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if request has valid id
+        postID = checkID(pk)
+        if postID is None:
+            return Response({"error": "Invalid post ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if post exists, then edit it
+        try:
+            post = Post.objects.get(pk=postID)
+            serializer = PostSerializer(post, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        except Post.DoesNotExist:
+            return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
         
     # Delete a post
     @permission_classes([IsAuthenticated]) # Logged in users only
     def delete(self, request, pk):
+        # Check if request has valid id
+        postID = checkID(pk)
+        if postID is None:
+            return Response({"error": "Invalid post ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if post exists then delete it
         try:
-            post = Post.objects.get(pk=pk)
+            post = Post.objects.get(pk=postID)
             post.delete()
             return Response({"message": "Post deleted"}, status=status.HTTP_204_NO_CONTENT)
         except Post.DoesNotExist:
@@ -166,8 +187,13 @@ class CommentList(APIView):
 class SpecificComment(APIView):
     # View a comment
     def get(self, request, fk, pk):
+        # Check if request has valid id
+        commentID = checkID(pk)
+        if commentID is None:
+            return Response({"error": "Invalid comment ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if comment exists, then return it
         try:
-            comment = Comment.objects.get(pk=pk)
+            comment = Comment.objects.get(pk=commentID)
             serializer = CommentSerializer(comment)
             return Response(serializer.data)
         except Comment.DoesNotExist:
@@ -176,7 +202,12 @@ class SpecificComment(APIView):
     # Edit a comment
     @permission_classes([IsAuthenticated]) # Logged in users only
     def put(self, request, fk, pk):
-        comment = Comment.objects.get(pk=pk)
+        # Check if request has valid id
+        commentID = checkID(pk)
+        if commentID is None:
+            return Response({"error": "Invalid comment ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if comment exists, then edit it
+        comment = Comment.objects.get(pk=commentID)
         serializer = CommentSerializer(comment, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -186,8 +217,13 @@ class SpecificComment(APIView):
     # Delete a comment
     @permission_classes([IsAuthenticated]) # Logged in users only
     def delete(self, request, fk, pk):
+        # Check if request has valid id
+        commentID = checkID(pk)
+        if commentID is None:
+            return Response({"error": "Invalid comment ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if comment exists, then delete it
         try:
-            comment = Comment.objects.get(pk=pk)
+            comment = Comment.objects.get(pk=commentID)
             comment.delete()
             return Response({"message": "Comment deleted"}, status=status.HTTP_204_NO_CONTENT)
         except Comment.DoesNotExist:

@@ -4,13 +4,13 @@
   </ng-template>
   <div *ngIf = "isLoggedIn == true; else loggedOut" class="form">
     <h2>Add comment</h2>
-    <form [formGroup] = "commentForm" (ngSubmit)="onSubmit()">
+    <form [formGroup] = "commentForm" (ngSubmit)="validateForm()">
       <div class="form-group">
         <label for="text">Text</label><br>
         <textarea name="text" id="text"  rows="3" placeholder="Text for the comment"
           class="form-control" formControlName="text">
         </textarea>
-      </div>
+      </div><br>
       <button type="submit"
         class="btn btn-primary">Submit Comment</button>
     </form>

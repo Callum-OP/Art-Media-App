@@ -36,7 +36,11 @@ export class PostComponent {
         next: (response: any) => {
           this.post = response || {};
         },
-        error: (err) => console.error("Error fetching posts:", err)
+        error: (err) => {
+          this.router.navigate(['/posts']);
+          // If post is empty then send user to posts page
+          console.error("Error fetching posts:", err);
+        }
       });
   }
 
@@ -66,7 +70,6 @@ export class PostComponent {
     this.webService.deletePost(postID)
     .subscribe( (response: any) => {
       this.router.navigate(['/posts']);
-      window.location.reload();
     })
   }
 
@@ -84,7 +87,6 @@ export class PostComponent {
   onDeleteComment(commentID: any) {
     this.webService.deleteComment(commentID)
     .subscribe( (response: any) => {
-      this.router.navigate(['/posts']);
       window.location.reload();
     })
   }

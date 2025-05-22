@@ -26,7 +26,7 @@ export class AddPostComponent {
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.postForm = this.formBuilder.group( {
-      title: [''],
+      title: ['', Validators.required],
       text: ['', Validators.required],
     });
     // Check if user is logged in, if not send them to posts page
@@ -64,13 +64,14 @@ export class AddPostComponent {
   }
 
   // Validation for the add post form
-  isInvalid(control: any) {
-    return this.postForm.controls[control].invalid && this.postForm.controls[control].touched;
-  }
-  isUnTouched() {
-    return this.postForm.controls.text.pristine;
-  }
-  isIncomplete(){
-    return this.isInvalid('text') || this.isUnTouched();
+  validateForm() {
+    let title = this.postForm.value.title;
+    let text = this.postForm.value.text;
+    if (title == "" || text == "" || this.imageFile == null) {
+      alert("All fields must be filled out");
+      return false;
+    } else {
+      return this.onSubmit();
+    }
   }
 }

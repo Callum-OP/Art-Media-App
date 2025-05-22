@@ -17,9 +17,10 @@
   </div>
   <div class="row">
     <button class="btn btn-outline-light" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
-    <br><br>
+  </div>
+  <br>
+  <div class="row">
     <button class="btn btn-outline-light" (click) = "onAddComment(post.id)">Add Comment</button>
-    <br>
   </div>
   <div class="row">
     <div *ngFor="let comment of post.comments">

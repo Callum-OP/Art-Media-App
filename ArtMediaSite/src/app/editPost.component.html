@@ -4,7 +4,7 @@
   </ng-template>
   <div *ngIf = "isCorrectUser == true; else loggedOut" class="form">
     <h2>Edit post</h2>
-    <form [formGroup] = "postForm" (ngSubmit)="onSubmit()">
+    <form [formGroup] = "postForm" (ngSubmit)="validateForm()">
       <div class="form-group">
         <label for="title">Title</label><br>
         <input type="text" name="title" id="title" placeholder="Title for the post"

@@ -4,27 +4,30 @@
   </ng-template>
   <div *ngIf = "isLoggedIn == true; else loggedOut" class="form">
     <h2>Add a new post</h2>
-    <form [formGroup] = "postForm" (ngSubmit)="onSubmit()">
+    <form [formGroup] = "postForm" (ngSubmit)="validateForm()">
       <div class="form-group">
         <label for="title">Title</label><br>
         <input type="text" name="title" id="title" placeholder="Title for the post"
-          class="form-control" formControlName="title">
+        class="form-control" formControlName="title" required>
       </div>
       <div class="form-group">
         <label for="text">Text</label><br>
         <textarea name="text" id="text"  rows="3" placeholder="Text for the post"
-          class="form-control" formControlName="text">
+          class="form-control" formControlName="text" required>
         </textarea>
       </div>
       <div class="form-group">
         <label for="image">Image or Video</label><br>
         <input type="file" (change)="onFileSelected($event)" name="image" id="image" 
-        class="form-control" placeholder="File for image or video">
+        class="form-control" placeholder="File for image or video" required>
       </div>
       <div *ngIf="imagePreview">
         <p>Image Preview:</p>
         <img [src]="imagePreview" alt="Image Preview"/>
       </div><br>
+      <span>
+        <p>Ensure all fields are filled</p>
+      </span>
       <button type="submit"
         class="btn btn-primary">Submit Post</button>
     </form>

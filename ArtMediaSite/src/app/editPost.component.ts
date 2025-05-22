@@ -65,18 +65,19 @@ export class EditPostComponent {
     .subscribe( (response: any) => {
       this.postForm.reset(); 
       this.imageFile = null;
-      this.router.navigate(['/posts']);
+      this.router.navigate(['/posts', this.route.snapshot.params['postID']]);
     })
   }
 
   // Validation for the edit post form
-  isInvalid(control: any) {
-    return this.postForm.controls[control].invalid && this.postForm.controls[control].touched;
-  }
-  isUnTouched() {
-    return this.postForm.controls.text.pristine;
-  }
-  isIncomplete(){
-    return this.isInvalid('text') || this.isUnTouched();
+  validateForm() {
+    let title = this.postForm.value.title;
+    let text = this.postForm.value.text;
+    if (title == "" || text == "") {
+      alert("All fields must be filled out");
+      return false;
+    } else {
+      return this.onSubmit();
+    }
   }
 }

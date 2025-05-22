@@ -46,13 +46,13 @@ export class AddCommentComponent {
   }
 
   // Validation for the add comment form
-  isInvalid(control: any) {
-    return this.commentForm.controls[control].invalid && this.commentForm.controls[control].touched;
-  }
-  isUnTouched() {
-    return this.commentForm.controls.text.pristine;
-  }
-  isIncomplete(){
-    return this.isInvalid('text') || this.isUnTouched();
+  validateForm() {
+    let text = this.commentForm.value.text;
+    if (text == "") {
+      alert("All fields must be filled out");
+      return false;
+    } else {
+      return this.onSubmit();
+    }
   }
 }

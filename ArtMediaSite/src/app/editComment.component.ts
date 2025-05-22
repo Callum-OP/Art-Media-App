@@ -45,18 +45,18 @@ export class EditCommentComponent {
     this.webService.editComment(this.commentForm.value, this.route.snapshot.params['postID'], this.route.snapshot.params['commentID'])
     .subscribe( (response: any) => {
       this.commentForm.reset(); 
-      this.router.navigate(['/posts']);
+      this.router.navigate(['/posts', this.route.snapshot.params['postID']]);
     })
   }
 
   // Validation for the edit comment form
-  isInvalid(control: any) {
-    return this.commentForm.controls[control].invalid && this.commentForm.controls[control].touched;
-  }
-  isUnTouched() {
-    return this.commentForm.controls.text.pristine;
-  }
-  isIncomplete(){
-    return this.isInvalid('text') || this.isUnTouched();
+  validateForm() {
+    let text = this.commentForm.value.text;
+    if (text == "") {
+      alert("All fields must be filled out");
+      return false;
+    } else {
+      return this.onSubmit();
+    }
   }
 }
