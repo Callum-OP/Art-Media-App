@@ -19,7 +19,8 @@ export class PostComponent {
   token: any = "";
   postID: any = "";
   postUsername: any = "";
-  commentUsername: any = "";
+  commentUsernames: { [key: string]: string } = {};
+
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
@@ -37,7 +38,10 @@ export class PostComponent {
     this.webService.getPost(this.postID).subscribe({
       next: (response: any) => {
         this.post = response || {};
-        this.getUsername(this.post.user);
+        this.getUsernames("post", this.post.user);
+        for (let comment of this.post.comments) {
+          this.getUsernames("comments", comment.user);
+        }
       },
       error: (err) => {
         this.router.navigate(['/posts']);
@@ -58,19 +62,30 @@ export class PostComponent {
       }
     }
 
-  // Retrieve username using user id
-  getUsername(userID: any) {
+  // Retrieve usernames using user id
+  getUsernames(type:any, userID: any) {
     this.webService.getUser(userID).subscribe({
       next: (response: any) => {
-        this.postUsername = response.username;
-        return this.postUsername;
+        if (type == "post") {
+          this.postUsername = response.username
+          return this.postUsername;
+        } else {
+          this.commentUsernames[userID] = response.username;
+          return this.commentUsernames[userID];
+        }
       },
-      error: (err) => {
-        this.postUsername = "Unknown User";
-        return "Unknown User";
+      error: () => {
+        if (type = "post") {
+          this.postUsername = "Unknown User";
+          return this.postUsername;
+        } else {
+          this.commentUsernames[userID] = "Unknown User";
+          return this.commentUsernames[userID];
+        }
       }
     });
   }
+  
 
   // Take user to add post page
   onAddPost() {
