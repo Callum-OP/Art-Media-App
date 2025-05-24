@@ -18,6 +18,8 @@ export class PostComponent {
   username: any = "";
   token: any = "";
   postID: any = "";
+  postUsername: any = "";
+  commentUsername: any = "";
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
@@ -33,15 +35,16 @@ export class PostComponent {
    
     // Get post
     this.webService.getPost(this.postID).subscribe({
-        next: (response: any) => {
-          this.post = response || {};
-        },
-        error: (err) => {
-          this.router.navigate(['/posts']);
-          // If post is empty then send user to posts page
-          console.error("Error fetching posts:", err);
-        }
-      });
+      next: (response: any) => {
+        this.post = response || {};
+        this.getUsername(this.post.user);
+      },
+      error: (err) => {
+        this.router.navigate(['/posts']);
+        // If post is empty then send user to posts page
+        console.error("Error fetching posts:", err);
+      }
+    });
   }
 
     // Check if user is logged in
@@ -54,6 +57,20 @@ export class PostComponent {
         return false;
       }
     }
+
+  // Retrieve username using user id
+  getUsername(userID: any) {
+    this.webService.getUser(userID).subscribe({
+      next: (response: any) => {
+        this.postUsername = response.username;
+        return this.postUsername;
+      },
+      error: (err) => {
+        this.postUsername = "Unknown User";
+        return "Unknown User";
+      }
+    });
+  }
 
   // Take user to add post page
   onAddPost() {

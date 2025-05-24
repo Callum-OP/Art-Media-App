@@ -11,5 +11,6 @@
 }
 
 .img {
-  width: 76.6rem; 
+  max-width: 38.4rem; 
+  max-height: 38.4rem;
 }

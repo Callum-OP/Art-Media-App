@@ -1,34 +1,36 @@
-<div class="content">
-  <div class="row">
-    <div class="col-sm-6">
-      <a class="card bg-transparent" [href]="'http://127.0.0.1:8000/' + post.image">
-        <img class="card-img rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
-      </a>
+<body>
+  <div class="content">
+    <div class="row">
+      <div class="col-sm-6">
+        <a class="card bg-transparent" [href]="'http://127.0.0.1:8000/' + post.image">
+          <img class="card-img rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
+        </a>
+      </div>
+      <div class="col-sm-6">
+        <div class="card bg-transparent">
+          <div class="card-block">
+            <h3> {{ postUsername }} </h3>
+            <h4> {{post.title}} </h4>
+            <p> {{post.text}} </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-sm-6">
-      <div class="card bg-transparent">
-        <div class="card-block">
-          <h3> {{post.user}} </h3>
-          <h4> {{post.title}} </h4>
-          <p> {{post.text}} </p>
+    <div class="row">
+      <button class="btn btn-outline-light" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
+    </div>
+    <br>
+    <div class="row">
+      <button class="btn btn-outline-light" (click) = "onAddComment(post.id)">Add Comment</button>
+    </div>
+    <div class="row">
+      <div *ngFor="let comment of post.comments">
+        <h3>{{comment.user}}</h3>
+        <p>{{comment.text}}</p>
+        <div *ngIf="comment.user === user">
+          <button class="btn btn-outline-light" (click) = "onEditComment(post.id, comment.id)">Edit</button><button class="btn btn-danger" (click) = "onDeleteComment(comment.id)">Delete</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <button class="btn btn-outline-light" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
-  </div>
-  <br>
-  <div class="row">
-    <button class="btn btn-outline-light" (click) = "onAddComment(post.id)">Add Comment</button>
-  </div>
-  <div class="row">
-    <div *ngFor="let comment of post.comments">
-      <h4>{{comment.user}}</h4>
-      <p>{{comment.text}}</p>
-      <div *ngIf="comment.user === user">
-        <button class="btn btn-outline-light" (click) = "onEditComment(post.id, comment.id)">Edit</button><button class="btn btn-danger" (click) = "onDeleteComment(comment.id)">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
+</body>
