@@ -38,9 +38,11 @@ export class PostComponent {
     this.webService.getPost(this.postID).subscribe({
       next: (response: any) => {
         this.post = response || {};
-        this.getUsernames("post", this.post.user);
+        // Retrieve username of post
+        this.getUsername("post", this.post.user);
+        // Retrieve usernames of each comment
         for (let comment of this.post.comments) {
-          this.getUsernames("comments", comment.user);
+          this.getUsername("comments", comment.user);
         }
       },
       error: (err) => {
@@ -62,8 +64,8 @@ export class PostComponent {
       }
     }
 
-  // Retrieve usernames using user id
-  getUsernames(type:any, userID: any) {
+  // Retrieve username using user id
+  getUsername(type:any, userID: any) {
     this.webService.getUser(userID).subscribe({
       next: (response: any) => {
         if (type == "post") {

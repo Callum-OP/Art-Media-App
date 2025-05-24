@@ -17,6 +17,7 @@ export class PostsComponent {
   user: any = "";
   username: any = "";
   token: any = "";
+  postUsernames: { [key: string]: string } = {};
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
@@ -32,10 +33,29 @@ export class PostsComponent {
     this.webService.getPosts().subscribe({
         next: (response: any) => {
           this.posts = response || [];
+          // Retrieve usernames of each post
+          for (let post of this.posts) {
+            this.getUsername(post.user);
+          }
         },
         error: (err) => console.error("Error fetching posts:", err)
       });
   }
+
+  // Retrieve username using user id
+  getUsername(userID: any) {
+    this.webService.getUser(userID).subscribe({
+      next: (response: any) => {
+        this.postUsernames[userID] = response.username;
+        return this.postUsernames[userID];
+      },
+      error: () => {
+        this.postUsernames[userID] = "Unknown User";
+        return this.postUsernames[userID];
+      }
+    });
+  }
+  
 
   // Check if user is logged in
   isloggedIn() {

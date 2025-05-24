@@ -25,7 +25,7 @@
     </div>
     <div class="row">
       <div *ngFor="let comment of post.comments">
-        <h4>{{commentUsernames[comment.user]}}</h4>
+        <h5>{{commentUsernames[comment.user]}}</h5>
         <p>{{comment.text}}</p>
         <div *ngIf="comment.user === user">
           <button class="btn btn-outline-light" (click) = "onEditComment(post.id, comment.id)">Edit</button><button class="btn btn-danger" (click) = "onDeleteComment(comment.id)">Delete</button>
