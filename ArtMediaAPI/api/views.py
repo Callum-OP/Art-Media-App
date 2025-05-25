@@ -6,6 +6,7 @@ from django.shortcuts import render # For showing backend html pages
 from .models import Post
 from .models import Comment
 from .models import CustomUser
+from .serializers import CreateUserSerializer
 from .serializers import UserSerializer
 from .serializers import PostSerializer
 from .serializers import CommentSerializer
@@ -53,7 +54,7 @@ class UserList(APIView):
             data = request.data.copy()
             # Hash password
             data['password'] = make_password(data.get('password'))
-            serializer = UserSerializer(data=data)
+            serializer = CreateUserSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 # Check user now exists

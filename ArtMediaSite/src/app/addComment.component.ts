@@ -26,7 +26,7 @@ export class AddCommentComponent {
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.commentForm = this.formBuilder.group( {
-      text: ['', Validators.required],
+      text: [''],
     });
     // Check if user is logged in, if not send them to posts page
     if (this.authService.loggedIn()) {

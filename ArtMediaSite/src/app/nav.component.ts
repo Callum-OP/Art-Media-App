@@ -31,10 +31,12 @@ export class NavComponent {
     // Check if user is authenticated/logged in
     this.authService.isAuthenticated().subscribe( (response: any) => {this.loggedIn = response})
     this.user = this.authService.getUserID();
+    if (this.user && this.user != 'null') {
     this.webService.getUser(this.user).subscribe({
       next: (response: any) => {
         this.profileImagePath = response.profile_pic;
       }});
+    }
 
     if (this.loggedIn) {
       // Logged in
@@ -55,30 +57,38 @@ export class NavComponent {
     }
   }
 
+  // Takes user to user account page
   account() {
-    return this.router.navigate(['/user/', this.user]);
+    if (this.user && this.user != 'null') {
+      return this.router.navigate(['/user/', this.user]);
+    } else {
+      return this.router.navigate(['/posts']);
+    }
   }
 
+  // Takes user to create account page
   register() {
     return this.router.navigate(['/register']);
   }
 
+  // Takes user to login page
   login() {
     return this.router.navigate(['/login']);
   }
 
+  // Clears user details from localstorage and logs them out
   logout() {
     this.authService.logout();
     this.webService.logoutUser();
     return window.location.reload();
   }
 
-    // Search bar that goes to page with all posts relating to what user searched for
-    searchBar(search: any) {
-      if (search != '') {
-        return window.location.href='http://localhost:4200/posts/search/' + search;
-      } else {
-        return this.router.navigate(['/posts']);
-      }
+  // Search bar that goes to page with all posts relating to what user searched for
+  searchBar(search: any) {
+    if (search != '') {
+      return window.location.href='http://localhost:4200/posts/search/' + search;
+    } else {
+      return this.router.navigate(['/posts']);
     }
+  }
 }

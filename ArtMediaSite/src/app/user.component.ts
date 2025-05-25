@@ -58,4 +58,9 @@ export class UserComponent {
       return false;
     }
   }
+
+  // Take user to edit user page
+  onEditUser(userID: any) {
+    this.router.navigate(['/user/' + userID + '/edit']);
+  }
 }

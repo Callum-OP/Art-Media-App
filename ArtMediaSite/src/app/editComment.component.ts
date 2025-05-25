@@ -27,7 +27,7 @@ export class EditCommentComponent {
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.commentForm = this.formBuilder.group( {
-      text: ['', Validators.required],
+      text: [''],
     });
     this.webService.getComment(this.route.snapshot.params['postID'], this.route.snapshot.params['commentID']).subscribe(postData => {
       this.comment = postData;

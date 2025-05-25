@@ -54,6 +54,32 @@ export class WebService {
     return this.http.post('http://127.0.0.1:8000/api/users/', postData);
   }
 
+  editUser(Image:any, User: any, userID: any) {
+    // Put token in header of request
+    this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }), 
+    };
+
+    let postData = new FormData();
+    if (Image instanceof File) {
+      this.img = Image;
+    } else {
+      this.img = "";
+    }
+
+    postData.append("username", User.username);
+    postData.append("email", User.email);
+    postData.append("profile_pic", this.img);
+
+    return this.http.put('http://127.0.0.1:8000/api/users/' + userID + '/', postData, requestOptions);
+  }
+
   // URL requests for posts
   getPosts() {
     return this.http.get(

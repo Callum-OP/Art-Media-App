@@ -26,8 +26,8 @@ export class AddPostComponent {
   ngOnInit() {
     this.user = this.authService.getUserID()
     this.postForm = this.formBuilder.group( {
-      title: ['', Validators.required],
-      text: ['', Validators.required],
+      title: [''],
+      text: [''],
     });
     // Check if user is logged in, if not send them to posts page
     if (this.authService.loggedIn()) {

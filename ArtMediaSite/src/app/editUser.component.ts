@@ -5,15 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'editPost',
-  templateUrl: './editPost.component.html',
-  styleUrls: ['./editPost.component.css']
+  selector: 'editUser',
+  templateUrl: './editUser.component.html',
+  styleUrls: ['./editUser.component.css']
 })
 
-// Class to edit a post in the posts database
-export class EditPostComponent {
-  post: any = [];
-  postForm: any;
+// Class to edit a user in the users database
+export class EditUserComponent {
+  editUser: any = [];
+  userForm: any;
   user: any;
   isCorrectUser: boolean = false;
 
@@ -23,21 +23,21 @@ export class EditPostComponent {
     private router: Router,
     private formBuilder: FormBuilder) {}
 
-  // On startup the edit post form is set
+  // On startup the edit user form is set
   ngOnInit() {
     this.user = this.authService.getUserID()
-    this.postForm = this.formBuilder.group( {
-      title: [''],
-      text: [''],
+    this.userForm = this.formBuilder.group( {
+      username: [''],
+      email: [''],
     });
-    this.webService.getPost(this.route.snapshot.params['postID']).subscribe(response => {
-      this.post = response;
-      this.postForm.patchValue(this.post);
-      this.imageFile = this.post.image;
-      this.imagePreview = 'http://127.0.0.1:8000/' + this.post.image;
-      // Check if user in post matches user editing post
-      // If not, send them to posts page
-      if (this.authService.checkUser(this.post.user)) {
+    this.webService.getUser(this.route.snapshot.params['userID']).subscribe(response => {
+      this.editUser = response;
+      this.userForm.patchValue(this.editUser);
+      this.imageFile = this.editUser.profile_pic;
+      this.imagePreview = 'http://127.0.0.1:8000/' + this.editUser.profile_pic;
+      // Check if user being edited matches current user
+      // If not, send them to users page
+      if (this.authService.checkUser(this.editUser.id)) {
         this.isCorrectUser = true;
       }
     });
@@ -59,21 +59,21 @@ export class EditPostComponent {
     }
   }
 
-  // Edit the post in the database
+  // Edit the user in the database
   onSubmit() {
-    this.webService.editPost(this.imageFile, this.postForm.value, this.route.snapshot.params['postID'])
+    this.webService.editUser(this.imageFile, this.userForm.value, this.route.snapshot.params['userID'])
     .subscribe( (response: any) => {
-      this.postForm.reset(); 
+      this.userForm.reset(); 
       this.imageFile = null;
-      this.router.navigate(['/posts', this.route.snapshot.params['postID']]);
+      this.router.navigate(['/user/', this.route.snapshot.params['userID']]);
     })
   }
 
-  // Validation for the edit post form
+  // Validation for the edit user form
   validateForm() {
-    let title = this.postForm.value.title;
-    let text = this.postForm.value.text;
-    if (title == "" || text == "") {
+    let username = this.userForm.value.username;
+    let email = this.userForm.value.email;
+    if (username == "" || email == "") {
       alert("All fields must be filled out");
       return false;
     } else {

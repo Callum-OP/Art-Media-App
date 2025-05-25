@@ -14,6 +14,7 @@
           <p *ngIf = "user === userProfile.id; else altView"> {{userProfile.email}} 
             <br> Joined {{userProfileDate}}
           </p>
+          <button class="btn btn-outline-light" *ngIf="user === userProfile.id" (click) = "onEditUser(user)">Edit</button>
           <ng-template #altView>
             <p>Joined {{userProfileDate}}</p>
           </ng-template>
