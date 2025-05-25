@@ -28,23 +28,19 @@
   border: none;
 }
 
-.postProfilePic {
-  width: 4rem; 
-  height: 4rem;
-}
-
-.commentProfilePic {
-  width: 2rem; 
-  height: 2rem;
-}
-
 .card-img {
   cursor: pointer;
 }
 
-.rounded img-fluid {
+.col-sm-6 {
+  width: 25rem; 
+}
+
+.rounded-circle {
   margin: 0px;
   padding: 0px;
+  width: 20rem; 
+  height: 20rem; 
 }
 
 .card-block {

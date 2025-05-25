@@ -1,23 +1,25 @@
 <div class="content">
-  <h2>Art Share</h2>
-  <ng-container *ngIf = "isloggedIn() == true; else loggedOut">
-    <p>Hello {{username}}</p>
-    <button class="btn btn-outline-light" (click) = "onAddPost()">Add New Post</button>
-    <br><br>
-  </ng-container>
-  <ng-template #loggedOut>
-    <p>Login to add your own posts</p>
-  </ng-template>
   <div class="row">
-    <div class="col" *ngFor = "let post of posts">
+    <h2>Art Share</h2>
+    <ng-container *ngIf = "isloggedIn() == true; else loggedOut">
+      <p>Hello {{username}}</p>
+      <div>
+        <button class="btn btn-outline-light" (click) = "onAddPost()">Add New Post</button><br><br>
+      </div>
+      <br><br>
+      <p>Newest Posts</p>
+    </ng-container>
+    <ng-template #loggedOut>
+      <p>Login to add your own posts</p>
+    </ng-template>
+    <div class="col" *ngFor = "let post of newestPosts">
       <div class="card bg-transparent" [routerLink] = "['/posts/', post.id]">
         <div class="card-img-top">
-          <img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
+          <img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Uploaded Image"/>
         </div>
         <div class="card-block">
           <h5> {{post.title}} </h5>
-          <h6>{{postUsernames[post.user]}}</h6>
-          <p> {{post.text}} </p>
+          <h6><img class="profilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + postProfilePics[post.user]" alt="Profile Picture"/> {{postUsernames[post.user]}}</h6>
         </div>
       </div>
     </div>

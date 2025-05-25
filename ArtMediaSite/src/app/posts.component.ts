@@ -13,11 +13,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PostsComponent {
 
   posts: any = [];
+  newestPosts: any = [];
   comments: any = [];
   user: any = "";
   username: any = "";
   token: any = "";
   postUsernames: { [key: string]: string } = {};
+  postProfilePics: { [key: string]: string } = {};
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
@@ -33,25 +35,29 @@ export class PostsComponent {
     this.webService.getPosts().subscribe({
         next: (response: any) => {
           this.posts = response || [];
+          // Put posts in order of newest
+          this.newestPosts = this.posts.reverse();
           // Retrieve usernames of each post
           for (let post of this.posts) {
-            this.getUsername(post.user);
+            this.getUserDetails(post.user);
           }
         },
         error: (err) => console.error("Error fetching posts:", err)
       });
   }
 
-  // Retrieve username using user id
-  getUsername(userID: any) {
+  // Retrieve username snd profile picture using user id
+  getUserDetails(userID: any) {
     this.webService.getUser(userID).subscribe({
       next: (response: any) => {
         this.postUsernames[userID] = response.username;
-        return this.postUsernames[userID];
+        this.postProfilePics[userID] = response.profile_pic;
+        return this.postUsernames[userID], this.postProfilePics[userID];
       },
       error: () => {
         this.postUsernames[userID] = "Unknown User";
-        return this.postUsernames[userID];
+        this.postProfilePics[userID] = "media/default/DefaultProfilePicAlt.jpg";
+        return this.postUsernames[userID], this.postProfilePics[userID];
       }
     });
   }

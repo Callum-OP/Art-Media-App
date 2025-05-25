@@ -14,6 +14,7 @@ export class NavComponent {
   id: any = '';
   isLoggedIn: any;
   buttonName: any;
+  user: any = "";
   token: any = 'null';
 
   logoImagePath: String;
@@ -26,9 +27,14 @@ export class NavComponent {
     private webService: WebService) {
 
     this.logoImagePath = "/assets/Logo.png";
-    this.profileImagePath = "";
+    this.profileImagePath = "media/default/DefaultProfilePicAlt.jpg";
     // Check if user is authenticated/logged in
     this.authService.isAuthenticated().subscribe( (response: any) => {this.loggedIn = response})
+    this.user = this.authService.getUserID();
+    this.webService.getUser(this.user).subscribe({
+      next: (response: any) => {
+        this.profileImagePath = response.profile_pic;
+      }});
 
     if (this.loggedIn) {
       // Logged in
@@ -47,6 +53,10 @@ export class NavComponent {
     } else {
       this.logout();
     }
+  }
+
+  account() {
+    return this.router.navigate(['/user/', this.user]);
   }
 
   register() {

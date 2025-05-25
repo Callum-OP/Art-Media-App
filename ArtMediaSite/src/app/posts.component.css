@@ -43,6 +43,11 @@
   border: none;
 }
 
+.profilePic {
+  width: 2rem; 
+  height: 2rem;
+}
+
 .card-img-top {
   margin: 0px;
   padding: 0px;

@@ -16,9 +16,9 @@
       </li>
     </ul>
   
-    <div class="form-inline ms-auto"
-      style = "padding-right: 10px">
+    <div class="form-inline ms-auto" style = "padding-right: 10px">
       <button class="btn btn-outline-light" (click) = "loginLogoutButton()">{{buttonName}}</button>
-      <button class="btn btn-outline-light" *ngIf = "!loggedIn" (click) = "register()">Signup</button>
+      <button class="btn btn-outline-light" *ngIf = "!loggedIn" (click) = "register()" style = "margin-left: 10px">Signup</button>
+      <button class="btn" *ngIf = "loggedIn" (click) = "account()" style = "margin-left: 10px" ><img class="profilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + profileImagePath" alt="Profile Picture"/></button>
     </div>
   </div>

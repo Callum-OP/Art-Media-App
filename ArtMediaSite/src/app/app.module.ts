@@ -19,10 +19,12 @@ import { EditPostComponent } from './editPost.component';
 import { SearchPostsComponent } from './searchPosts.component';
 import { AddCommentComponent } from './addComment.component';
 import { EditCommentComponent } from './editComment.component';
+import { UserComponent } from './user.component';
 
 const routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: SignUpComponent },
+  { path: 'user/:userID', component: UserComponent },
   { path: 'posts', component: PostsComponent },
   { path: 'posts/:postID', component: PostComponent },
   { path: 'addPost', component: AddPostComponent },
@@ -34,7 +36,7 @@ const routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, NavComponent, LoginComponent, SignUpComponent, PostsComponent, PostComponent, AddPostComponent, EditPostComponent, SearchPostsComponent, AddCommentComponent, EditCommentComponent,
+    AppComponent, NavComponent, LoginComponent, UserComponent, SignUpComponent, PostsComponent, PostComponent, AddPostComponent, EditPostComponent, SearchPostsComponent, AddCommentComponent, EditCommentComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, RouterModule,

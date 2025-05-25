@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'post',
@@ -19,7 +20,11 @@ export class PostComponent {
   token: any = "";
   postID: any = "";
   postUsername: any = "";
+  postProfilePic: any = "";
+  postDate: any = "";
   commentUsernames: { [key: string]: string } = {};
+  commentProfilePics: { [key: string]: string } = {};
+  commentDates: { [key: string]: string } = {};
 
 
   constructor(public webService: WebService,  
@@ -38,11 +43,13 @@ export class PostComponent {
     this.webService.getPost(this.postID).subscribe({
       next: (response: any) => {
         this.post = response || {};
-        // Retrieve username of post
-        this.getUsername("post", this.post.user);
-        // Retrieve usernames of each comment
+        // Retrieve username and date of post
+        this.getUserDetails("post", this.post.user);
+        this.postDate = formatDate(this.post.created_at,'dd-MM-yyyy','en-GB');
+        // Retrieve usernames and date of each comment
         for (let comment of this.post.comments) {
-          this.getUsername("comments", comment.user);
+          this.getUserDetails("comments", comment.user);
+          this.commentDates[comment.id] = formatDate(comment.created_at,'dd-MM-yyyy','en-GB');
         }
       },
       error: (err) => {
@@ -53,35 +60,39 @@ export class PostComponent {
     });
   }
 
-    // Check if user is logged in
-    loggedIn() {
-      let result = "";
-      this.authService.isAuthenticated().subscribe({next: (response: any) => {result = response;}});
-      if (result) {
-        return true;
-      } else {
-        return false;
-      }
+  // Check if user is logged in
+  loggedIn() {
+    let result = "";
+    this.authService.isAuthenticated().subscribe({next: (response: any) => {result = response;}});
+    if (result) {
+      return true;
+    } else {
+      return false;
     }
+  }
 
-  // Retrieve username using user id
-  getUsername(type:any, userID: any) {
+  // Retrieve username and profile picture using user id
+  getUserDetails(type:any, userID: any) {
     this.webService.getUser(userID).subscribe({
       next: (response: any) => {
         if (type == "post") {
           this.postUsername = response.username
-          return this.postUsername;
+          this.postProfilePic = response.profile_pic;
+          return this.postUsername, this.postProfilePic;
         } else {
           this.commentUsernames[userID] = response.username;
-          return this.commentUsernames[userID];
+          this.commentProfilePics[userID] = response.profile_pic;
+          return this.commentUsernames[userID], this.commentProfilePics[userID];
         }
       },
       error: () => {
         if (type = "post") {
           this.postUsername = "Unknown User";
+          this.postProfilePic = "media/default/DefaultProfilePicAlt.jpg";
           return this.postUsername;
         } else {
           this.commentUsernames[userID] = "Unknown User";
+          this.commentProfilePics[userID] = "media/default/DefaultProfilePicAlt.jpg";
           return this.commentUsernames[userID];
         }
       }

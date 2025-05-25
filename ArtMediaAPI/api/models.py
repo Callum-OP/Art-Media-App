@@ -13,10 +13,12 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=128, verbose_name='password')
     email = models.EmailField(max_length=254)
+    profile_pic = models.ImageField(upload_to='uploads/profile_pictures', default='default/DefaultProfilePicAlt.jpg')
     created_at = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
         return self.username
+    
 
 def file_cleanup(sender, instance, **kwargs):
     # Finds file associated with a deleted post

@@ -6,3 +6,8 @@
 .search {
     background-color: #f3f0f0;
 }
+
+.profilePic {
+  width: 2rem; 
+  height: 2rem;
+}

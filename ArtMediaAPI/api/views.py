@@ -89,6 +89,27 @@ class SpecificUser(APIView):
             return Response(serializer.data)
         except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+     # Edit a user account
+    @permission_classes([IsAuthenticated]) # Logged in users only
+    def put(self, request, pk):
+        # Check if request has valid id
+        userID = checkID(pk)
+        if userID is None:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if user exists, then edit it
+        try:
+            data = request.data.copy()
+            # Hash password
+            data['password'] = make_password(data.get('password'))
+            user = CustomUser.objects.get(pk=userID)
+            serializer = UserSerializer(user, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        except CustomUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     
 
 class PostList(APIView):
