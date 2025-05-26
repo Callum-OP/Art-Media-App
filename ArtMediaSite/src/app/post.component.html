@@ -1,13 +1,13 @@
 <body>
   <div class="content">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-7">
         <a class="card bg-transparent" [href]="'http://127.0.0.1:8000/' + post.image">
           <img class="card-img rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
         </a>
         <p>Posted {{postDate}}</p>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <div class="card bg-transparent">
           <div class="card-block">
             <h3><a [routerLink] = "['/user/', post.user]"><img class="postProfilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + postProfilePic" alt="Profile Picture"/></a> {{postUsername}}</h3>
