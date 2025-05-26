@@ -106,6 +106,10 @@ class SpecificUser(APIView):
             user = CustomUser.objects.get(pk=userID)
             serializer = UserSerializer(user, data=data)
             if serializer.is_valid():
+                # If image has changed then delete the old image file
+                if 'profile_pic' in serializer.validated_data:
+                    if serializer.validated_data['profile_pic'] != user.profile_pic:
+                        user.profile_pic.delete(save=False)
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
@@ -161,6 +165,10 @@ class SpecificPost(APIView):
             post = Post.objects.get(pk=postID)
             serializer = PostSerializer(post, data=request.data)
             if serializer.is_valid():
+                # If image has changed then delete the old image file
+                if 'image' in serializer.validated_data:
+                    if serializer.validated_data['image'] != post.image:
+                        post.image.delete(save=False)
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)

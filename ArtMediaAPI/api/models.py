@@ -11,7 +11,6 @@ from django.db.models.signals import post_delete
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=255, unique=True)
-    password = models.CharField(max_length=128, verbose_name='password')
     email = models.EmailField(max_length=254)
     profile_pic = models.ImageField(upload_to='uploads/profile_pictures', default='default/DefaultProfilePicAlt.jpg')
     created_at = models.DateTimeField(default=django.utils.timezone.now)
@@ -40,7 +39,7 @@ class Post(models.Model):
     # Stores unique id, username, image, body of text and time created
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='post_user', on_delete=models.CASCADE) # Ensure when user is deleted, their posts are also deleted
-    image = models.FileField(upload_to='uploads/', blank=True, validators=[validate_file]) # Image/video is optional
+    image = models.FileField(upload_to='uploads/', blank=True, validators=[validate_file]) # Image/video files only
     title = models.TextField(default='My art') # Title of post
     text = models.TextField() # Additional details about the post
     created_at = models.DateTimeField(default=django.utils.timezone.now)
@@ -58,6 +57,6 @@ class Comment(models.Model):
     created_at = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
-        return f"{self.name} (Sub-item of {self.post.name})"
+        return f"{self.user} (Sub-item of {self.post.name})"
     
 post_delete.connect(file_cleanup, sender=Post, dispatch_uid="someresource.file_cleanup")
