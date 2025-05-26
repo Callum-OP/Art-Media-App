@@ -1,32 +1,34 @@
-<div class="content">
-  <ng-template #loggedOut>
-    <p>Not logged in</p>
-  </ng-template>
-  <div *ngIf = "isCorrectUser == true; else loggedOut" class="form">
-    <h2>Edit post</h2>
-    <form [formGroup] = "postForm" (ngSubmit)="validateForm()">
-      <div class="form-group">
-        <label for="title">Title</label><br>
-        <input type="text" name="title" id="title" placeholder="Title for the post"
-          class="form-control" formControlName="title">
-      </div>
-      <div class="form-group">
-        <label for="text">Text</label><br>
-        <textarea name="text" id="text"  rows="3" placeholder="Text for the post"
-          class="form-control" formControlName="text">
-        </textarea>
-      </div>
-      <div class="form-group">
-        <label for="image">Image or Video</label><br>
-        <input type="file" (change)="onFileSelected($event)" name="image" id="image" 
-        class="form-control" placeholder="File for image or video">
-      </div>
-      <div *ngIf="imagePreview">
-        <p>Current Image Preview:</p>
-        <img class="img" [src]="imagePreview" alt="Current Image Preview"/>
-      </div><br>
-      <button type="submit"
-        class="btn btn-primary">Submit Post</button>
-    </form>
+<body>
+  <div class="content">
+    <ng-template #loggedOut>
+      <p>Not logged in</p>
+    </ng-template>
+    <div *ngIf = "isCorrectUser == true; else loggedOut" class="form">
+      <h2>Edit post</h2>
+      <form [formGroup] = "postForm" (ngSubmit)="validateForm()">
+        <div class="form-group">
+          <label for="title">Title</label><br>
+          <input type="text" name="title" id="title" placeholder="Title for the post"
+            class="form-control" formControlName="title">
+        </div>
+        <div class="form-group">
+          <label for="text">Text</label><br>
+          <textarea name="text" id="text"  rows="3" placeholder="Text for the post"
+            class="form-control" formControlName="text">
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="image">Image or Video</label><br>
+          <input type="file" (change)="onFileSelected($event)" name="image" id="image" 
+          class="form-control" placeholder="File for image or video">
+        </div>
+        <div *ngIf="imagePreview">
+          <p>Current Image Preview:</p>
+          <img class="img" [src]="imagePreview" alt="Current Image Preview"/>
+        </div><br>
+        <button type="submit"
+          class="btn btn-primary">Submit Post</button>
+      </form>
+    </div>
   </div>
-</div>
+</body>
