@@ -18,6 +18,8 @@ export class SearchPostsComponent {
   user: any = "";
   username: any = "";
   token: any = "";
+  postUsernames: { [key: string]: string } = {};
+  postProfilePics: { [key: string]: string } = {};
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
@@ -33,22 +35,44 @@ export class SearchPostsComponent {
     this.search = this.route.snapshot.params['search'];
     this.webService.searchPosts(this.search).subscribe({
         next: (response: any) => {
-          this.posts = response || [];
+          // Get posts in order of newest
+          this.posts = response.reverse() || [];
+          // Retrieve usernames and profile pictures of each post
+          for (let post of this.posts) {
+            this.getUserDetails(post.user);
+          }
         },
         error: (err) => console.error("Error fetching posts:", err)
       });
   }
 
-    // Check if user is logged in
-    loggedIn() {
-      let result = "";
-      this.authService.isAuthenticated().subscribe({next: (response: any) => {result = response;}});
-      if (result) {
-        return true;
-      } else {
-        return false;
+  // Retrieve username and profile picture using user id
+  getUserDetails(userID: any) {
+    this.webService.getUser(userID).subscribe({
+      next: (response: any) => {
+        this.postUsernames[userID] = response.username;
+        this.postProfilePics[userID] = response.profile_pic;
+        return {"username":this.postUsernames[userID], "profilePic":this.postProfilePics[userID]};
+      },
+      error: () => {
+        this.postUsernames[userID] = "Unknown User";
+        this.postProfilePics[userID] = "media/default/DefaultProfilePicAlt.jpg";
+        return {"username":this.postUsernames[userID], "profilePic":this.postProfilePics[userID]};
       }
+    });
+  }
+
+
+  // Check if user is logged in
+  loggedIn() {
+    let result = "";
+    this.authService.isAuthenticated().subscribe({next: (response: any) => {result = response;}});
+    if (result) {
+      return true;
+    } else {
+      return false;
     }
+  }
 
   // Take user to add post page
   onAddPost() {

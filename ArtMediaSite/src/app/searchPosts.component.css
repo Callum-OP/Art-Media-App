@@ -40,6 +40,11 @@
     padding-right: 5px;
     border: none;
   }
+
+  .profilePic {
+    width: 2rem; 
+    height: 2rem;
+  }
   
   .card-img-top {
     margin: 0px;

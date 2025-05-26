@@ -15,8 +15,8 @@
           <img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
         </div>
         <div class="card-block">
-          <h5> {{ post.title }} </h5>
-          <p> {{ post.text }} </p>
+          <h5> {{post.title}} </h5>
+          <h6><img class="profilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + postProfilePics[post.user]" alt="Profile Picture"/> {{postUsernames[post.user]}}</h6>
         </div>
       </div>
     </div>

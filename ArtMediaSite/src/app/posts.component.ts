@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PostsComponent {
 
   posts: any = [];
-  newestPosts: any = [];
   comments: any = [];
   user: any = "";
   username: any = "";
@@ -34,10 +33,9 @@ export class PostsComponent {
     // Get all posts
     this.webService.getPosts().subscribe({
         next: (response: any) => {
-          this.posts = response || [];
-          // Put posts in order of newest
-          this.newestPosts = this.posts.reverse();
-          // Retrieve usernames of each post
+          // Get posts in order of newest
+          this.posts = response.reverse() || [];
+          // Retrieve usernames and profile pictures of each post
           for (let post of this.posts) {
             this.getUserDetails(post.user);
           }
@@ -46,18 +44,18 @@ export class PostsComponent {
       });
   }
 
-  // Retrieve username snd profile picture using user id
+  // Retrieve username and profile picture using user id
   getUserDetails(userID: any) {
     this.webService.getUser(userID).subscribe({
       next: (response: any) => {
         this.postUsernames[userID] = response.username;
         this.postProfilePics[userID] = response.profile_pic;
-        return this.postUsernames[userID], this.postProfilePics[userID];
+        return {"username":this.postUsernames[userID], "profilePic":this.postProfilePics[userID]};
       },
       error: () => {
         this.postUsernames[userID] = "Unknown User";
         this.postProfilePics[userID] = "media/default/DefaultProfilePicAlt.jpg";
-        return this.postUsernames[userID], this.postProfilePics[userID];
+        return {"username":this.postUsernames[userID], "profilePic":this.postProfilePics[userID]};
       }
     });
   }
