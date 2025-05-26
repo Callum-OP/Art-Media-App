@@ -191,11 +191,21 @@ class SpecificPost(APIView):
             return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
         
 class SearchPosts(APIView):
-        # Search and filter posts by title or text contained in post
+        # Search and filter posts by title or text contained in post or user id that made post
         def get(self, request, search):
-            posts = Post.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
-            serializer = PostSerializer(posts, many=True)
-            return Response(serializer.data)
+            # Check if request has valid id, if not then search by title or text
+            userID = checkID(search)
+            # Search by user
+            if userID is None:
+                posts = Post.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+                serializer = PostSerializer(posts, many=True)
+                return Response(serializer.data)
+            # Search by posts
+            else:
+                posts = Post.objects.filter(user=search)
+                if (posts):
+                    serializer = PostSerializer(posts, many=True)
+                    return Response(serializer.data)
 
 
 class CommentList(APIView):

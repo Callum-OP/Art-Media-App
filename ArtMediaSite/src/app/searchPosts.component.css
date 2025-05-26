@@ -49,6 +49,7 @@
   .card-img-top {
     margin: 0px;
     padding: 0px;
+    max-height: 30rem;
   }
   
   .rounded img-fluid {

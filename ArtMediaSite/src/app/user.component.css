@@ -48,3 +48,24 @@
   padding-left: 5px; 
   padding-right: 5px;
 }
+
+.post {
+  margin: 0px;
+  padding: 0px;
+  cursor: pointer;
+  width: 15rem; 
+  padding-left: 5px; 
+  padding-right: 5px;
+  border: none;
+}
+
+.profilePic {
+  width: 2rem; 
+  height: 2rem;
+}
+
+.card-img-top {
+  margin: 0px;
+  padding: 0px;
+  max-height: 30rem;
+}

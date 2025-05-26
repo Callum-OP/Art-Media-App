@@ -19,6 +19,9 @@ export class UserComponent {
   userProfile: any = "";
   userProfileUsername: any = "";
   userProfileDate: any = "";
+  posts: any = [];
+  postUsernames: { [key: string]: string } = {};
+  postProfilePics: { [key: string]: string } = {};
 
 
   constructor(public webService: WebService,
@@ -41,12 +44,20 @@ export class UserComponent {
         this.userProfile = response || {};
         // Retrieve username and the date that user account was created
         this.userProfileDate = formatDate(this.userProfile.created_at,'dd-MM-yyyy','en-GB');
+        // Get all posts by user
+        this.webService.searchPosts(this.userProfile.id).subscribe({
+          next: (response: any) => {
+            // Get posts in order of newest
+            this.posts = response.reverse() || [];
+          },
+          error: (err) => console.error("Error fetching posts:", err)
+        });
       },
       error: (err) => {
         console.error("Error fetching user profile:", err);
       }
     });
-  }
+}
 
   // Check if user is logged in
   loggedIn() {
