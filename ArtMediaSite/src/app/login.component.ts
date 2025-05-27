@@ -46,14 +46,15 @@ export class LoginComponent {
     });
   }
 
-  // Validation for the user form
-  isInvalid(control: any) {
-    return this.loginForm.controls[control].invalid && this.loginForm.controls[control].touched;
-  }
-  isUnTouched() {
-    return this.loginForm.controls.username.pristine || this.loginForm.controls.password.pristine;
-  }
-  isIncomplete(){
-    return this.isInvalid('username') || this.isInvalid('password') || this.isUnTouched();
+  // Validation for the login form
+  validateForm() {
+    let username = this.loginForm.value.username;
+    let password = this.loginForm.value.password;
+    if (username == "" || password == "") {
+      alert("All fields must be filled out");
+      return false;
+    } else {
+      return this.onSubmit();
+    }
   }
 }

@@ -1,23 +1,18 @@
 <body>
   <div class="content rounded">
     <h3>Login to your account</h3>
-    <form [formGroup] = "loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup] = "loginForm" (ngSubmit)="validateForm()">
       <div>
         <label for="username">Username*</label><br>
         <input type="text" name="username" id="username" placeholder="A name for your account"
-          class="form-control" formControlName="username"
-          [ngClass]="{ 'error' : isInvalid('username') }">
+          class="form-control" formControlName="username">
       </div><br>
       <div>
         <label for="password">Password*</label><br>
         <input type="password" name="password" id="password" placeholder="A password to protect your account"
-          class="form-control" formControlName="password"
-          [ngClass]="{ 'error' : isInvalid('password') }">
+          class="form-control" formControlName="password">
       </div><br>
-      <span *ngIf="isIncomplete()">
-        You must complete all fields
-      </span>
-      <button class="btn btn-primary" *ngIf="!isIncomplete()" type="submit">Login</button>
+      <button class="btn btn-primary" type="submit">Login</button>
     </form><br>
   </div>
 </body>

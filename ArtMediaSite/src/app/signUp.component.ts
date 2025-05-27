@@ -47,14 +47,16 @@ export class SignUpComponent {
     });
   }
 
-  // Validation for the user form
-  isInvalid(control: any) {
-    return this.signUpForm.controls[control].invalid && this.signUpForm.controls[control].touched;
-  }
-  isUnTouched() {
-    return this.signUpForm.controls.username.pristine || this.signUpForm.controls.email.pristine || this.signUpForm.controls.password.pristine;
-  }
-  isIncomplete(){
-    return this.isInvalid('username') || this.isInvalid('email') || this.isInvalid('password') || this.isUnTouched();
+  // Validation for the sign up form
+  validateForm() {
+    let username = this.signUpForm.value.username;
+    let email = this.signUpForm.value.email;
+    let password = this.signUpForm.value.password;
+    if (username == "" || email == "" || password == "") {
+      alert("All fields must be filled out");
+      return false;
+    } else {
+      return this.onSubmit();
+    }
   }
 }

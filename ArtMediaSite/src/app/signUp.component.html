@@ -1,29 +1,26 @@
 <body>
   <div class="content rounded">
     <h3>Enter your details to create an account</h3>
-    <form [formGroup] = "signUpForm" (ngSubmit)="onSubmit()">
+    <form [formGroup] = "signUpForm" (ngSubmit)="validateForm()">
       <div>
         <label for="username">Username*</label><br>
         <input type="text" name="username" id="username" placeholder="A name for your account"
-          class="form-control" formControlName="username"
-          [ngClass]="{ 'error' : isInvalid('username') }">
+          class="form-control" formControlName="username">
       </div><br>
       <div>
         <label for="email">Email*</label><br>
         <input type="email" name="email" id="email" placeholder="Your email address"
-          class="form-control" formControlName="email"
-          [ngClass]="{ 'error' : isInvalid('email') }">
+          class="form-control" formControlName="email">
       </div><br>
       <div>
         <label for="password">Password*</label><br>
         <input type="password" name="password" id="password" placeholder="A password to protect your account"
-          class="form-control" formControlName="password"
-          [ngClass]="{ 'error' : isInvalid('password') }">
+          class="form-control" formControlName="password">
       </div><br>
-      <span *ngIf="isIncomplete()">
+      <span>
         You must complete all fields
       </span>
-      <button class="btn btn-primary" *ngIf="!isIncomplete()" type="submit">Create Account</button>
+      <button class="btn btn-primary" type="submit">Create Account</button>
     </form><br>
   </div>
 </body>
