@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
+import { UtilityService } from './utilityService.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 
@@ -29,6 +30,7 @@ export class PostComponent {
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
+    private utilityService: UtilityService,
     private route: ActivatedRoute,
     private router: Router) {}
 
@@ -44,11 +46,11 @@ export class PostComponent {
       next: (response: any) => {
         this.post = response || {};
         // Retrieve username and date of post
-        this.getUserDetails("post", this.post.user);
+        this.fetchUserDetails("post", this.post.user);
         this.postDate = formatDate(this.post.created_at,'dd-MM-yyyy','en-GB');
         // Retrieve usernames and date of each comment
         for (let comment of this.post.comments) {
-          this.getUserDetails("comments", comment.user);
+          this.fetchUserDetails("comments", comment.user);
           this.commentDates[comment.id] = formatDate(comment.created_at,'dd-MM-yyyy','en-GB');
         }
       },
@@ -71,30 +73,15 @@ export class PostComponent {
     }
   }
 
-  // Retrieve username and profile picture using user id
-  getUserDetails(type:any, userID: any) {
-    this.webService.getUser(userID).subscribe({
-      next: (response: any) => {
-        if (type == "post") {
-          this.postUsername = response.username
-          this.postProfilePic = response.profile_pic;
-          return this.postUsername, this.postProfilePic;
-        } else {
-          this.commentUsernames[userID] = response.username;
-          this.commentProfilePics[userID] = response.profile_pic;
-          return this.commentUsernames[userID], this.commentProfilePics[userID];
-        }
-      },
-      error: () => {
-        if (type = "post") {
-          this.postUsername = "Unknown User";
-          this.postProfilePic = "media/default/DefaultProfilePicAlt.jpg";
-          return this.postUsername;
-        } else {
-          this.commentUsernames[userID] = "Unknown User";
-          this.commentProfilePics[userID] = "media/default/DefaultProfilePicAlt.jpg";
-          return this.commentUsernames[userID];
-        }
+  // Retrieve and store username and profile picture using user id
+  fetchUserDetails(type: any, userID: any): void {
+    this.utilityService.getUserDetails(userID).subscribe(response => {
+      if (type == "post") {
+        this.postUsername = response.username
+        this.postProfilePic = response.profile_pic;
+      } else {
+        this.commentUsernames[userID] = response.username;
+        this.commentProfilePics[userID] = response.profile_pic;
       }
     });
   }

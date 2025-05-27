@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UtilityService } from './utilityService.service';
 
 @Component({
   selector: 'posts',
@@ -22,8 +23,10 @@ export class PostsComponent {
 
   constructor(public webService: WebService,  
     public authService: AuthService, 
+    private utilityService: UtilityService,
     private route: ActivatedRoute,
     private router: Router) {}
+  
 
   // When the app starts user details, tokens and all posts are gathered
   ngOnInit() {
@@ -37,29 +40,20 @@ export class PostsComponent {
           this.posts = response.reverse() || [];
           // Retrieve usernames and profile pictures of each post
           for (let post of this.posts) {
-            this.getUserDetails(post.user);
+            this.fetchUserDetails(post.user);
           }
         },
         error: (err) => console.error("Error fetching posts:", err)
       });
   }
 
-  // Retrieve username and profile picture using user id
-  getUserDetails(userID: any) {
-    this.webService.getUser(userID).subscribe({
-      next: (response: any) => {
-        this.postUsernames[userID] = response.username;
-        this.postProfilePics[userID] = response.profile_pic;
-        return {"username":this.postUsernames[userID], "profilePic":this.postProfilePics[userID]};
-      },
-      error: () => {
-        this.postUsernames[userID] = "Unknown User";
-        this.postProfilePics[userID] = "media/default/DefaultProfilePicAlt.jpg";
-        return {"username":this.postUsernames[userID], "profilePic":this.postProfilePics[userID]};
-      }
+  // Retrieve and store username and profile picture using user id
+  fetchUserDetails(userID: any): void {
+    this.utilityService.getUserDetails(userID).subscribe(response => {
+      this.postUsernames[userID] = response.username;
+      this.postProfilePics[userID] = response.profile_pic;
     });
   }
-  
 
   // Check if user is logged in
   isloggedIn() {
