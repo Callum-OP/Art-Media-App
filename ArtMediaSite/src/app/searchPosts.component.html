@@ -1,16 +1,18 @@
 <body>
-  <div class="content">
+  <div class="content rounded" style="background-color: #262933; padding: 15px; margin: 15px;">
     <div class="row">
-      <h2>Art Share</h2>
       <ng-container *ngIf = "loggedIn() == true; else loggedOut">
-        <p>Hello {{username}}</p>
+        <h3>Hello {{username}}</h3>
+        <br><br><br>
         <div>
           <button class="btn btn-outline-light" (click) = "onAddPost()">Add New Post</button><br><br>
         </div>
         <br><br>
+        <p>Search Results</p>
       </ng-container>
       <ng-template #loggedOut>
         <p>Login to add your own posts</p>
+        <p>Search Results</p>
       </ng-template>
       <div class="row">
         <div class="col" *ngFor = "let post of posts">

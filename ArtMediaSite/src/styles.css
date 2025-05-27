@@ -1,12 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-* {
-    background-color: #262933;
-}
-
-.content {
-    background-color: #262933;
-}
-
 body {
-    background-color: #262933;
+    background-color: rgb(110, 184, 243);
 }

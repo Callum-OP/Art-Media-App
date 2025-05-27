@@ -1,16 +1,11 @@
-/* {
-    background-color: #262933;
-    color: #f3f0f0;
-}
-.button {
-    background-color: #545666;
-    color: #f3f0f0;
-  }
-*/
-
 * {
-  background-color: #262933;
+  background-repeat:no-repeat;
+  background-size:100% 100vh;
   color: #f3f0f0;
+}
+
+body {
+  padding-bottom: 10px;
 }
 
 .content {

@@ -2,7 +2,7 @@
   <div class="navbar navbar-expand-sm fixed-top">
     <ul class="navbar-nav" style = "padding-left: 15px;">
       <li class="nav-item" style = "padding-right: 10px">
-        <img routerLink="/" class="rounded mx-auto d-block" src={{logoImagePath}} alt="thumbnail image of the item" width="120" height="40" style = "margin: auto; cursor: pointer"/>
+        <img routerLink="/posts" class="rounded mx-auto d-block" src={{logoImagePath}} alt="thumbnail image of the item" width="120" height="40" style = "margin: auto; cursor: pointer"/>
       </li>
       <li class="nav-item" style = "padding-right: 20px">
         <a routerLink="/posts" class="nav-link">Posts</a>
@@ -11,15 +11,15 @@
         <input type="search" class="search form-control" placeholder="Search for posts" #filter>
       </li>
       <li style = "padding-right: 10px">
-        <button class="btn btn-outline-light" (click)="searchBar(filter.value)">
+        <button class="btn btn-outline-secondary" (click)="searchBar(filter.value)">
             Search
         </button>
       </li>
     </ul>
   
     <div class="form-inline ms-auto" style = "padding-right: 10px">
-      <button class="btn btn-outline-light" (click) = "loginLogoutButton()">{{buttonName}}</button>
-      <button class="btn btn-outline-light" *ngIf = "!loggedIn" (click) = "register()" style = "margin-left: 10px">Signup</button>
+      <button class="btn btn-outline-secondary" (click) = "loginLogoutButton()">{{buttonName}}</button>
+      <button class="btn btn-outline-secondary" *ngIf = "!loggedIn" (click) = "register()" style = "margin-left: 10px">Signup</button>
       <button class="btn" *ngIf = "loggedIn" (click) = "account()" style = "margin-left: 10px" ><img class="profilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + profileImagePath" alt="Profile Picture"/></button>
     </div>
   </div>

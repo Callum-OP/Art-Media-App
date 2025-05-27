@@ -1,64 +1,59 @@
-/* {
-    background-color: #262933;
-    color: #f3f0f0;
-}
-.button {
-    background-color: #545666;
-    color: #f3f0f0;
-  }
-*/
-
 * {
-    background-color: #262933;
-    color: #f3f0f0;
-  }
-  
-  .content {
-    margin: 3px;
-    margin-left: 13.6px;
-    padding: 5px;
-  }
-  
-  .row {
-    margin: 0px;
-    padding: 0px;
-    max-width: 76.7rem; 
-    align-content: center;
-  }
-  
-  .col {
-    margin: 0px;
-    padding: 0px;
-  }
-  
-  .card {
-    margin: 0px;
-    padding: 0px;
-    cursor: pointer;
-    min-width: 15rem;
-    padding-left: 5px; 
-    padding-right: 5px;
-    border: none;
-  }
+  color: #f3f0f0;
+}
 
-  .profilePic {
-    width: 2rem; 
-    height: 2rem;
-  }
-  
-  .card-img-top {
-    margin: 0px;
-    padding: 0px;
-    max-height: 30rem;
-  }
-  
-  .rounded img-fluid {
-    margin: 0px;
-    padding: 0px;
-  }
-  
-  .card-block {
-    padding-top: 8px; 
-    padding-left: 5px; 
-    padding-right: 5px;
-  }
+body {
+  padding-bottom: 10px;
+}
+
+.content {
+  margin: 3px;
+  margin-left: 13.6px;
+  padding: 5px;
+}
+
+.row {
+  margin: 0px;
+  padding: 0px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+}
+
+.col {
+  margin: 0px;
+  padding: 0px;
+}
+
+.card {
+  margin: 0px;
+  padding: 0px;
+  cursor: pointer;
+  width: 15rem; 
+  padding-left: 5px; 
+  padding-right: 5px;
+  border: none;
+}
+
+.profilePic {
+  width: 2rem; 
+  height: 2rem;
+}
+
+.card-img-top {
+  margin: 0px;
+  padding: 0px;
+  max-height: 30rem;
+}
+
+.rounded img-fluid {
+  margin: 0px;
+  padding: 0px;
+}
+
+.card-block {
+  padding-top: 8px; 
+  padding-left: 5px; 
+  padding-right: 5px;
+}

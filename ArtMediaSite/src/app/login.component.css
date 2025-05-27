@@ -1,13 +1,17 @@
 * {
-    background-color: #262933;
-    color: #f3f0f0;
-  }
-
-.content {
-    margin: 3px;
-    margin-left: 13.6px;
-    margin-right: 13.6px;
-    padding: 5px;
+  background-color: #262933; 
+  color: #f3f0f0;
 }
 
-.error { background-color: #fff0f0; }
+body {
+  background-color: rgb(110, 184, 243);
+  padding-bottom: 3px;
+}
+
+.content {
+  background-color: #262933; 
+  padding: 20px; 
+  margin: 18px;
+  margin-left: 13.6px;
+  margin-right: 13.6px;
+}

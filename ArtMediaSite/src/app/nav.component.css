@@ -1,10 +1,13 @@
 * {
-    background-color: #262933;
-    color: #f3f0f0;
+    background-color: rgb(240, 244, 254);
   }
 
+.navbar {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
 .search {
-    background-color: #f3f0f0;
+    background-color: transparent;
 }
 
 .profilePic {

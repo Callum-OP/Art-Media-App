@@ -1,9 +1,14 @@
-<body>
+<body style="background-color: rgb(87, 133, 93); background-image: url('assets/Background.gif');">
   <div class="content">
+
+  </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <div class="content rounded" style="background-color: #262933; margin-right: 15px;">
     <div class="row">
-      <h2>Art Share</h2>
       <ng-container *ngIf = "isloggedIn() == true; else loggedOut">
-        <p>Hello {{username}}</p>
+        <h3>Hello {{username}}</h3>
+        <br><br><br>
         <div>
           <button class="btn btn-outline-light" (click) = "onAddPost()">Add New Post</button><br><br>
         </div>
@@ -12,6 +17,7 @@
       </ng-container>
       <ng-template #loggedOut>
         <p>Login to add your own posts</p>
+        <p>Newest Posts</p>
       </ng-template>
       <div class="col" *ngFor = "let post of posts">
         <div class="card bg-transparent" [routerLink] = "['/posts/', post.id]">
