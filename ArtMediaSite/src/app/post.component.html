@@ -31,7 +31,7 @@
     </div>
     <div class="row">
       <div *ngFor="let comment of post.comments">
-        <h6><img class="commentProfilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + commentProfilePics[comment.user]" alt="Profile Picture"/> {{commentUsernames[comment.user]}} - {{commentDates[comment.id]}}</h6>
+        <h6><a [routerLink] = "['/user/', comment.user]"><img class="commentProfilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + commentProfilePics[comment.user]" alt="Profile Picture"/></a> {{commentUsernames[comment.user]}} - {{commentDates[comment.id]}}</h6>
         <p>{{comment.text}}</p>
         <div *ngIf="comment.user === user">
           <button class="btn btn-outline-light" (click) = "onEditComment(post.id, comment.id)">Edit</button><button class="btn btn-danger" (click) = "onDeleteComment(comment.id)">Delete</button>

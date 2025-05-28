@@ -4,7 +4,9 @@
       <div class="col-sm-6">
         <div class="card bg-transparent">
           <div class="card-img">
-            <img class="rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + userProfile.profile_pic" alt="Profile Picture"/><br><br>
+            <a class="card bg-transparent" [href]="'http://127.0.0.1:8000/' + userProfile.profile_pic">
+              <img class="rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + userProfile.profile_pic" alt="Profile Picture"/><br><br>
+            </a>
           </div>
         </div>
       </div>
