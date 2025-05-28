@@ -2,14 +2,8 @@ from uuid import UUID
 from rest_framework.views import APIView
 from rest_framework.response import Response # For sending a response
 from rest_framework import status
-from django.shortcuts import render # For showing backend html pages
-from .models import Post
-from .models import Comment
-from .models import CustomUser
-from .serializers import CreateUserSerializer
-from .serializers import UserSerializer
-from .serializers import PostSerializer
-from .serializers import CommentSerializer
+from .models import Post, Comment, CustomUser, PostLike
+from .serializers import CreateUserSerializer, UserSerializer, PostSerializer, CommentSerializer
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login, logout # For login authentication
@@ -191,21 +185,61 @@ class SpecificPost(APIView):
             return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
         
 class SearchPosts(APIView):
-        # Search and filter posts by title or text contained in post or user id that made post
-        def get(self, request, search):
-            # Check if request has valid id, if not then search by title or text
-            userID = checkID(search)
-            # Search by user
-            if userID is None:
-                posts = Post.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+    # Search and filter posts by title or text contained in post or user id that made post
+    def get(self, request, search):
+        # Check if request has valid id, if not then search by title or text
+        userID = checkID(search)
+        # Search by user
+        if userID is None:
+            posts = Post.objects.filter(Q(title__icontains=search) | Q(text__icontains=search))
+            serializer = PostSerializer(posts, many=True)
+            return Response(serializer.data)
+        # Search by posts
+        else:
+            posts = Post.objects.filter(user=search)
+            if (posts):
                 serializer = PostSerializer(posts, many=True)
                 return Response(serializer.data)
-            # Search by posts
+                
+class LikePost(APIView):
+    # View likes of post
+    def get(self, request, pk, fk):
+        # Check if request has valid id
+        postID = checkID(fk)
+        if postID is None:
+            return Response({"error": "Invalid post ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if post exists, then return likes
+        try:
+            post = Post.objects.get(pk=postID)
+            postLikeCount = post.likes.all().count()
+            return Response({"likes": postLikeCount})
+        except Post.DoesNotExist:
+            return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+    # Like a post
+    @permission_classes([IsAuthenticated]) # Logged in users only
+    def post(self, request, pk, fk):
+        # Check if request has valid id
+        postID = checkID(fk)
+        if postID is None:
+            return Response({"error": "Invalid post ID"}, status=status.HTTP_400_BAD_REQUEST)
+        userID = checkID(pk)
+        if userID is None:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if post and user exists then add or remove like
+        try:
+            post = Post.objects.get(pk=postID)
+            user = CustomUser.objects.get(pk=userID)
+            if user not in post.likes.all():
+                postLike = PostLike(post=post, user=user)
+                postLike.save()
+                like = True
             else:
-                posts = Post.objects.filter(user=search)
-                if (posts):
-                    serializer = PostSerializer(posts, many=True)
-                    return Response(serializer.data)
+                post.likes.remove(user)
+                like = False
+            return Response({"like": like})
+        except (Post.DoesNotExist, CustomUser.DoesNotExist):
+            return Response({"error": "Post or user not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class CommentList(APIView):

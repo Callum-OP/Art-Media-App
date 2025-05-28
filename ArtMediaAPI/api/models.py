@@ -43,11 +43,18 @@ class Post(models.Model):
     image = models.FileField(upload_to='uploads/', blank=True, validators=[validate_file]) # Image/video files only
     title = models.TextField(max_length=255, default='My art') # Title of post
     text = models.TextField(max_length=1000) # Additional details about the post
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, through="PostLike")
     created_at = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
         return self.name
+    
+    def numOfLikes(self):
+        return self.likes.all().count()
 
+class PostLike(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_user', on_delete=models.CASCADE) # Ensure when user is deleted, their likes are also deleted
+    post = models.ForeignKey(Post, related_name='like_post', on_delete=models.CASCADE) # Ensure when post is deleted, likes are also deleted
 
 class Comment(models.Model):
     # Stores unique id, post ID, username, body of text and time created

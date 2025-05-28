@@ -5,7 +5,7 @@
         <a class="card bg-transparent" [href]="'http://127.0.0.1:8000/' + post.image">
           <img class="card-img rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Image"/>
         </a>
-        <p>Posted {{postDate}}</p>
+        <p><img class="likeimg rounded img-fluid" src="assets/Like.png" alt="Profile Picture"/> {{postLikes}} - Posted {{postDate}}</p>
       </div>
       <div class="col-sm-5">
         <div class="card bg-transparent">
@@ -22,9 +22,15 @@
         <button class="btn btn-outline-light" *ngIf="post.user === user" (click) = "onEditPost(post.id)">Edit</button><button class="btn btn-danger" *ngIf="post.user === user" (click) = "onDeletePost(post.id)">Delete</button>
       </div>
     </div>
-    <br>
-    <div class="row">
+    <br *ngIf="post.user === user">
+    <div class="row" *ngIf = "loggedIn() == true">
       <div class="col-sm-6">
+        <ng-container *ngIf = "liked == true; else unLiked">
+          <button class="likebtn btn btn-danger" (click) = "onLike()"><img class="likeimg rounded img-fluid" src="assets/Like.png" alt="Profile Picture"/> Unlike</button>
+        </ng-container>
+        <ng-template #unLiked>
+          <button class="likebtn btn btn-outline-light" (click) = "onLike()"><img class="likeimg rounded img-fluid" src="assets/Like.png" alt="Profile Picture"/> Like</button>
+        </ng-template>
         <button class="btn btn-outline-light" (click) = "onAddComment(post.id)">Add Comment</button>
         <br><br>
       </div>

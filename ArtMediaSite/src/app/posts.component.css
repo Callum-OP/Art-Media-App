@@ -31,7 +31,6 @@ body {
 .card {
   margin: 0px;
   padding: 0px;
-  cursor: pointer;
   width: 15rem; 
   padding-left: 5px; 
   padding-right: 5px;
@@ -41,17 +40,14 @@ body {
 .profilePic {
   width: 2rem; 
   height: 2rem;
+  cursor: pointer;
 }
 
 .card-img-top {
   margin: 0px;
   padding: 0px;
   max-height: 30rem;
-}
-
-.rounded img-fluid {
-  margin: 0px;
-  padding: 0px;
+  cursor: pointer;
 }
 
 .card-block {

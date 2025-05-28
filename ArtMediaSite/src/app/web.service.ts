@@ -164,8 +164,30 @@ export class WebService {
   }
 
   searchPosts(search: any) {
-    return this.http.get(
-      'http://127.0.0.1:8000/api/posts/search/' + search  + '/');
+    return this.http.get('http://127.0.0.1:8000/api/posts/search/' + search  + '/');
+  }
+
+  getLikes(postID: any) {
+    this.userID = this.authService.getUserID();
+    this.postID = postID;
+    return this.http.get('http://127.0.0.1:8000/api/posts/' + postID + '/likes/' + this.userID + '/');
+  }
+
+  likePost(postID: any) {
+    // Put token in header of request
+    this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }), 
+    };
+
+    this.userID = this.authService.getUserID();
+    this.postID = postID;
+    return this.http.post('http://127.0.0.1:8000/api/posts/' + postID + '/likes/' + this.userID + '/', requestOptions);
   }
 
   // URL requests for comments

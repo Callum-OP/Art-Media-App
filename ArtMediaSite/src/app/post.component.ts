@@ -23,6 +23,9 @@ export class PostComponent {
   postUsername: any = "";
   postProfilePic: any = "";
   postDate: any = "";
+  postLikes: any = "";
+  liked: any = "";
+  buttonName: any = "";
   commentUsernames: { [key: string]: string } = {};
   commentProfilePics: { [key: string]: string } = {};
   commentDates: { [key: string]: string } = {};
@@ -40,6 +43,9 @@ export class PostComponent {
     this.username = this.authService.getUsername();
     this.token = this.authService.getToken();
     this.postID = this.route.snapshot.params['postID'];
+
+    // Get likes of post
+    this.fetchLikes(this.postID);
    
     // Get post
     this.webService.getPost(this.postID).subscribe({
@@ -53,6 +59,8 @@ export class PostComponent {
           this.fetchUserDetails("comments", comment.user);
           this.commentDates[comment.id] = formatDate(comment.created_at,'dd-MM-yyyy','en-GB');
         }
+        //Check if post has been like
+        this.isLiked(this.user, this.post.likes);
       },
       error: (err) => {
         this.router.navigate(['/posts']);
@@ -85,7 +93,33 @@ export class PostComponent {
       }
     });
   }
-  
+
+  fetchLikes(postID: any) {
+    this.webService.getLikes(postID).subscribe({
+      next: (response: any) => {
+        this.postLikes = response.likes;
+      }
+    });
+  }
+
+  isLiked(userID: any, likes: any) {
+    if (likes.includes(userID)) {
+      this.buttonName = "Unlike";
+      this.liked = true;
+      return true;
+    } else {
+      this.buttonName = "Like";
+      this.liked = false;
+      return false;
+    }
+  }
+
+  onLike() {
+    this.webService.likePost(this.postID)
+    .subscribe( (response: any) => {
+      window.location.reload();
+    })
+  }
 
   // Take user to add post page
   onAddPost() {

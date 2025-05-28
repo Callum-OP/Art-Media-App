@@ -20,14 +20,15 @@
         <p>Newest Posts</p>
       </ng-template>
       <div class="col" *ngFor = "let post of posts">
-        <div class="card bg-transparent" [routerLink] = "['/posts/', post.id]">
+        <div class="card bg-transparent">
           <div class="card-img-top">
-            <img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Uploaded Image"/>
+            <img class="rounded img-fluid" [routerLink] = "['/posts/', post.id]" [src]="'http://127.0.0.1:8000/' + post.image" alt="Uploaded Image"/>
           </div>
           <div class="card-block">
             <h5> {{post.title}} </h5>
-            <h6><img class="profilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + postProfilePics[post.user]" alt="Profile Picture"/> {{postUsernames[post.user]}}</h6>
+            <h6><img class="profilePic rounded-circle img-fluid" [routerLink] = "['/user/', post.user]" [src]="'http://127.0.0.1:8000/' + postProfilePics[post.user]" alt="Profile Picture"/> {{postUsernames[post.user]}}</h6>
           </div>
+          <br>
         </div>
       </div>
     </div>
