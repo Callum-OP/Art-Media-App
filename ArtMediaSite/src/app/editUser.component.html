@@ -25,6 +25,12 @@
           <p>Profile Picture Preview:</p>
           <img class="img rounded-circle" [src]="imagePreview" alt="Profile Picture Preview"/>
         </div><br>
+        <div class="form-group">
+          <label for="bio">Bio (Optional)</label><br>
+          <textarea name="bio" id="bio" placeholder="Biography for user"
+            class="form-control" formControlName="bio">
+          </textarea>
+        </div><br>
         <button type="submit"
           class="btn btn-primary">Submit Account Changes</button>
       </form>

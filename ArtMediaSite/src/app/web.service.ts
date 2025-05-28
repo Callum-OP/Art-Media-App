@@ -76,6 +76,7 @@ export class WebService {
     postData.append("username", User.username);
     postData.append("email", User.email);
     postData.append("profile_pic", this.img);
+    postData.append("bio", User.bio);
 
     return this.http.put('http://127.0.0.1:8000/api/users/' + userID + '/', postData, requestOptions);
   }

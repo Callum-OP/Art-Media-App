@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=254)
     profile_pic = models.ImageField(upload_to='uploads/profile_pictures', default='default/DefaultProfilePicAlt.jpg')
+    bio = models.TextField(max_length=1000, blank=True) # Additional details about the user, (optional)
     created_at = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
@@ -40,8 +41,8 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='post_user', on_delete=models.CASCADE) # Ensure when user is deleted, their posts are also deleted
     image = models.FileField(upload_to='uploads/', blank=True, validators=[validate_file]) # Image/video files only
-    title = models.TextField(default='My art') # Title of post
-    text = models.TextField() # Additional details about the post
+    title = models.TextField(max_length=255, default='My art') # Title of post
+    text = models.TextField(max_length=1000) # Additional details about the post
     created_at = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):

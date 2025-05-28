@@ -15,10 +15,13 @@
           <h3> {{userProfile.username}}</h3>
           <p *ngIf = "user === userProfile.id; else altView"> {{userProfile.email}} 
             <br> Joined {{userProfileDate}}
+            <br> {{userProfile.bio}}
           </p>
           <button class="btn btn-outline-light" *ngIf="user === userProfile.id" (click) = "onEditUser(user)">Edit</button>
           <ng-template #altView>
-            <p>Joined {{userProfileDate}}</p>
+            <p>Joined {{userProfileDate}}
+              <br> {{userProfile.bio}}
+            </p>
           </ng-template>
         </div>
       </div>

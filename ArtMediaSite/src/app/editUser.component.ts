@@ -29,6 +29,7 @@ export class EditUserComponent {
     this.userForm = this.formBuilder.group( {
       username: [''],
       email: [''],
+      bio: [''],
     });
     this.webService.getUser(this.route.snapshot.params['userID']).subscribe(response => {
       this.editUser = response;
@@ -74,7 +75,7 @@ export class EditUserComponent {
     let username = this.userForm.value.username;
     let email = this.userForm.value.email;
     if (username == "" || email == "") {
-      alert("All fields must be filled out");
+      alert("Username and email must be filled out");
       return false;
     } else {
       return this.onSubmit();
