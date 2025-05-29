@@ -16,7 +16,7 @@ export class PostsComponent {
   posts: any = [];
   newestPosts: any = [];
   popularPosts: any = [];
-  sortOption: string = 'newest';
+  sortOption: string = 'Newest';
   comments: any = [];
   user: any = "";
   username: any = "";
@@ -40,14 +40,12 @@ export class PostsComponent {
     this.webService.getPosts().subscribe({
         next: (response: any) => {
           // Sort posts by either newest or most popular
-          if (localStorage.getItem("sort") === 'popular') {
+          if (localStorage.getItem("sort") === 'Popular') {
             this.posts = response.reverse().sort((a: any, b: any) => b.likes.length-a.likes.length) || [];
-            this.sortOption = 'popular';
-            console.log('popular');
+            this.sortOption = 'Popular';
           } else {
             this.posts = response.reverse() || [];
-            this.sortOption = 'newest';
-            console.log('newest');
+            this.sortOption = 'Newest';
           }
           // Retrieve usernames and profile pictures of each post
           for (let post of this.posts) {
@@ -68,11 +66,11 @@ export class PostsComponent {
 
   // Set if posts should be sorted by newest or most popular
   onSortChange() {
-    if (this.sortOption === 'newest') {
-      localStorage.setItem("sort", 'newest');
+    if (this.sortOption === 'Newest') {
+      localStorage.setItem("sort", 'Newest');
       window.location.reload();
-    } else if (this.sortOption === 'popular') {
-      localStorage.setItem("sort", 'popular');
+    } else if (this.sortOption === 'Popular') {
+      localStorage.setItem("sort", 'Popular');
       window.location.reload();
     }
   }

@@ -28,6 +28,16 @@ body {
   padding: 0px;
 }
 
+.form-check {
+  margin-left: 35px;
+  padding: 0px;
+}
+
+.buttons {
+  margin-left: 10px;
+  margin-right: 25px;
+}
+
 .card {
   margin: 0px;
   padding: 0px;

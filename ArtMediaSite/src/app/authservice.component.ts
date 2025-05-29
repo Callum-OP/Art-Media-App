@@ -87,6 +87,7 @@ export class AuthService {
     localStorage.setItem("token", '');
     localStorage.setItem("user", '');
     localStorage.setItem("username", '');
+    localStorage.setItem("sort", 'Newest');
     return "Logged out";
   }
 }

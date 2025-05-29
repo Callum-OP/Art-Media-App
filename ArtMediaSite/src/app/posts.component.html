@@ -9,25 +9,27 @@
       <ng-container *ngIf = "isloggedIn() == true; else loggedOut">
         <h3>Hello {{username}}</h3>
         <br><br><br>
-        <div>
+        <div class="col buttons">
           <button class="btn btn-outline-light" (click) = "onAddPost()">Add New Post</button>
-          <div class="form-check">
-            <label class="form-check-label" for="newest">Newest Posts</label>
-            <input class="form-check-input" type="radio" [(ngModel)]="sortOption" (change)="onSortChange()" id="newest" value="newest">
-          </div>
-          <div class="form-check">
-            <label class="form-check-label" for="liked">Popular Posts</label>
-            <input class="form-check-input" type="radio" [(ngModel)]="sortOption" (change)="onSortChange()" id="liked" value="popular">
-          </div>
-          <br><br>
         </div>
-        <br><br>
-        <p>Newest Posts</p>
       </ng-container>
       <ng-template #loggedOut>
         <p>Login to add your own posts</p>
-        <p>Newest Posts</p>
       </ng-template>
+      <div class="col form-check">
+        <label class="form-check-label" for="newest">Newest Posts</label>
+        <input class="form-check-input" type="radio" [(ngModel)]="sortOption" (change)="onSortChange()" id="newest" value="Newest">
+      </div>
+      <div class="col form-check">
+        <label class="form-check-label" for="liked">Popular Posts</label>
+        <input class="form-check-input" type="radio" [(ngModel)]="sortOption" (change)="onSortChange()" id="liked" value="Popular">
+      </div>
+      <div class="col-sm-7"></div>
+      <br><br>
+    </div>
+    <div class="row">
+      <br><br><br>
+      <p>{{sortOption}} posts</p>
       <div class="col" *ngFor = "let post of posts">
         <div class="card bg-transparent">
           <div class="card-img-top">
