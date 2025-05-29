@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { WebService } from './web.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NavComponent } from './nav.component';
@@ -42,7 +42,7 @@ const routes = [
   ],
   imports: [
     BrowserModule, HttpClientModule, RouterModule,
-    RouterModule.forRoot(routes), ReactiveFormsModule, NgbModule,
+    RouterModule.forRoot(routes), ReactiveFormsModule, NgbModule, FormsModule,
   ],
   providers: [WebService],
   bootstrap: [AppComponent]

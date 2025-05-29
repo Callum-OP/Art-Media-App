@@ -25,7 +25,6 @@ export class PostComponent {
   postDate: any = "";
   postLikes: any = "";
   liked: any = "";
-  buttonName: any = "";
   commentUsernames: { [key: string]: string } = {};
   commentProfilePics: { [key: string]: string } = {};
   commentDates: { [key: string]: string } = {};
@@ -94,6 +93,7 @@ export class PostComponent {
     });
   }
 
+  // Get number of likes of post
   fetchLikes(postID: any) {
     this.webService.getLikes(postID).subscribe({
       next: (response: any) => {
@@ -102,18 +102,18 @@ export class PostComponent {
     });
   }
 
+  // Check if post has been liked by user or not
   isLiked(userID: any, likes: any) {
     if (likes.includes(userID)) {
-      this.buttonName = "Unlike";
       this.liked = true;
       return true;
     } else {
-      this.buttonName = "Like";
       this.liked = false;
       return false;
     }
   }
 
+  // Add like to post or remove if already there
   onLike() {
     this.webService.likePost(this.postID)
     .subscribe( (response: any) => {

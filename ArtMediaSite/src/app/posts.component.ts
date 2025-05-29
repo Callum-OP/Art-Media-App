@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,9 @@ import { UtilityService } from './utilityService.service';
 export class PostsComponent {
 
   posts: any = [];
+  newestPosts: any = [];
+  popularPosts: any = [];
+  sortOption: string = 'newest';
   comments: any = [];
   user: any = "";
   username: any = "";
@@ -36,8 +39,16 @@ export class PostsComponent {
     // Get all posts
     this.webService.getPosts().subscribe({
         next: (response: any) => {
-          // Get posts in order of newest
-          this.posts = response.reverse() || [];
+          // Sort posts by either newest or most popular
+          if (localStorage.getItem("sort") === 'popular') {
+            this.posts = response.reverse().sort((a: any, b: any) => b.likes.length-a.likes.length) || [];
+            this.sortOption = 'popular';
+            console.log('popular');
+          } else {
+            this.posts = response.reverse() || [];
+            this.sortOption = 'newest';
+            console.log('newest');
+          }
           // Retrieve usernames and profile pictures of each post
           for (let post of this.posts) {
             this.fetchUserDetails(post.user);
@@ -53,6 +64,17 @@ export class PostsComponent {
       this.postUsernames[userID] = response.username;
       this.postProfilePics[userID] = response.profile_pic;
     });
+  }
+
+  // Set if posts should be sorted by newest or most popular
+  onSortChange() {
+    if (this.sortOption === 'newest') {
+      localStorage.setItem("sort", 'newest');
+      window.location.reload();
+    } else if (this.sortOption === 'popular') {
+      localStorage.setItem("sort", 'popular');
+      window.location.reload();
+    }
   }
 
   // Check if user is logged in
