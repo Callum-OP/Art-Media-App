@@ -74,4 +74,9 @@ export class UserComponent {
   onEditUser(userID: any) {
     this.router.navigate(['/user/' + userID + '/edit']);
   }
+
+  // Add user to following
+  onFollowUser(userID: any) {
+    return userID;
+  }
 }

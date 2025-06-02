@@ -22,6 +22,7 @@
             <p>Joined {{userProfileDate}}
               <br> {{userProfile.bio}}
             </p>
+            <button class="btn btn-outline-light" (click) = "onFollowUser(user)">Follow</button>
           </ng-template>
         </div>
       </div>
@@ -29,9 +30,9 @@
     <div class="row">
       <p>View posts by {{userProfile.username}}</p>
       <div class="col" *ngFor = "let post of posts">
-        <div class="post card bg-transparent" *ngIf = "post.user === userProfile.id" [routerLink] = "['/posts/', post.id]">
+        <div class="post card bg-transparent" *ngIf = "post.user === userProfile.id">
           <div class="card-img-top">
-            <img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Uploaded Image"/>
+            <a [routerLink] = "['/posts/', post.id]"><img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Uploaded Image"/></a>
           </div>
           <div class="card-block">
             <h5> {{post.title}} </h5>

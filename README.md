@@ -11,3 +11,17 @@ Posts include a id, title, text, file, user id that liked it and the user id tha
 Comments include text, the post id and user id that made the comment.
 Likes include the post id and user id they are associated with.
 Users can include a username, email, password, profile picture and biography section.
+
+Features to add:
+View liked posts
+Follow users and view followed users
+
+Potential features to add:
+Split Posts page into a Home page and a Posts page
+Accessiblity features such as: 
+    Options to change text size or colour of site like a night and day mode
+    Be able to use the site using only a keyboard; currently tab can be used navigate between links, buttons and form options but not all buttons work when pressing enter and the profile picture on nav bar does not highlight to show it is selected
+
+
+Currently unresolved bugs:
+Switching to your own user account page while viewing another user account page does not refresh the page
