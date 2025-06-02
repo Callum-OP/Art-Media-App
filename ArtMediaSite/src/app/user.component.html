@@ -28,6 +28,14 @@
       </div>
     </div>
     <div class="row">
+      <p>Following</p>
+      <div class="col" *ngFor = "let followedUser of following">
+        <div class="card bg-transparent">
+          <div class="card-block">
+            <a href="/user/{{ followedUser.following }}"><h6><img class="profilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + followingProfilePics[followedUser.following]" alt="Profile Picture"/>{{followingUsernames[followedUser.following]}}</h6></a>
+          </div>
+        </div>
+      </div>
       <p>View posts by {{userProfile.username}}</p>
       <div class="col" *ngFor = "let post of posts">
         <div class="post card bg-transparent" *ngIf = "post.user === userProfile.id">

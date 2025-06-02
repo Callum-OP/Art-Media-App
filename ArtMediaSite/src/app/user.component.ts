@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { AuthService } from './authservice.component';
+import { UtilityService } from './utilityService.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 
@@ -20,12 +21,14 @@ export class UserComponent {
   userProfileUsername: any = "";
   userProfileDate: any = "";
   posts: any = [];
-  postUsernames: { [key: string]: string } = {};
-  postProfilePics: { [key: string]: string } = {};
+  following: any = [];
+  followingUsernames: { [key: string]: string } = {};
+  followingProfilePics: { [key: string]: string } = {};
 
 
   constructor(public webService: WebService,
     public authService: AuthService,
+    private utilityService: UtilityService,
     private route: ActivatedRoute,
     private router: Router) {}
 
@@ -44,6 +47,18 @@ export class UserComponent {
         this.userProfile = response || {};
         // Retrieve username and the date that user account was created
         this.userProfileDate = formatDate(this.userProfile.created_at,'dd-MM-yyyy','en-GB');
+        // Get all users that this user profile is following
+        this.webService.getFollowedUsers(this.userProfile.id).subscribe({
+          next: (response: any) => {
+            // Get followed data in order of newest
+            this.following = response.reverse() || [];
+            // Retrieve usernames and profile pictures of each followed user
+            for (let followedUser of this.following) {
+              this.fetchUserDetails(followedUser.following);
+            }
+          },
+          error: (err) => console.error("Error fetching followed users:", err)
+        });
         // Get all posts by user
         this.webService.searchPosts(this.userProfile.id).subscribe({
           next: (response: any) => {
@@ -57,7 +72,15 @@ export class UserComponent {
         console.error("Error fetching user profile:", err);
       }
     });
-}
+  }
+
+  // Retrieve and store username and profile picture using user id
+  fetchUserDetails(userID: any): void {
+    this.utilityService.getUserDetails(userID).subscribe(response => {
+      this.followingUsernames[userID] = response.username;
+      this.followingProfilePics[userID] = response.profile_pic;
+    });
+  }
 
   // Check if user is logged in
   loggedIn() {

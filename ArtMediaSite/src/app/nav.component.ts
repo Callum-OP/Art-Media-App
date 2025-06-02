@@ -60,7 +60,7 @@ export class NavComponent {
   // Takes user to user account page
   account() {
     if (this.user && this.user != 'null') {
-      return this.router.navigate(['/user/', this.user]);
+      return window.location.href='http://localhost:4200/user/' + this.user;
     } else {
       return this.router.navigate(['/posts']);
     }

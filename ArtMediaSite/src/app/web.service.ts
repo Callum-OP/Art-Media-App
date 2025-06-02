@@ -81,6 +81,27 @@ export class WebService {
     return this.http.put('http://127.0.0.1:8000/api/users/' + userID + '/', postData, requestOptions);
   }
 
+  getFollowedUsers(user: any) {
+    this.userID = this.authService.getUserID();
+    return this.http.get('http://127.0.0.1:8000/api/users/' + user + '/following/' + this.userID + '/');
+  }
+  
+  followUser(followedID: any) {
+    // Put token in header of request
+    this.token = this.authService.getToken();
+    if (!this.token) {
+      throw new Error('Unauthenticated, CSRF token missing');
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders({
+        'X-CSRFToken': this.token,
+      }),
+    };
+
+    this.userID = this.authService.getUserID();
+    return this.http.post('http://127.0.0.1:8000/api/users/' + this.userID + '/following/' + followedID + '/', requestOptions);
+  }
+
   // URL requests for posts
   getPosts() {
     return this.http.get(

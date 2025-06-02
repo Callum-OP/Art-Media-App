@@ -67,6 +67,7 @@ body {
 .profilePic {
   width: 2rem; 
   height: 2rem;
+  margin-right: 5px;
 }
 
 .card-img-top {
