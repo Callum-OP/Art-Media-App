@@ -18,6 +18,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+class FollowUser(models.Model):
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='following', on_delete=models.CASCADE)
+    following = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=django.utils.timezone.now)
     
 
 def file_cleanup(sender, instance, **kwargs):
@@ -55,6 +60,7 @@ class Post(models.Model):
 class PostLike(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_user', on_delete=models.CASCADE) # Ensure when user is deleted, their likes are also deleted
     post = models.ForeignKey(Post, related_name='like_post', on_delete=models.CASCADE) # Ensure when post is deleted, likes are also deleted
+    created_at = models.DateTimeField(default=django.utils.timezone.now)
 
 class Comment(models.Model):
     # Stores unique id, post ID, username, body of text and time created

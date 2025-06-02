@@ -2,8 +2,8 @@ from uuid import UUID
 from rest_framework.views import APIView
 from rest_framework.response import Response # For sending a response
 from rest_framework import status
-from .models import Post, Comment, CustomUser, PostLike
-from .serializers import CreateUserSerializer, UserSerializer, PostSerializer, CommentSerializer
+from .models import Post, Comment, CustomUser, PostLike, FollowUser
+from .serializers import CreateUserSerializer, FollowUserSerializer, UserSerializer, PostSerializer, CommentSerializer
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login, logout # For login authentication
@@ -109,6 +109,45 @@ class SpecificUser(APIView):
             return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
         except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class FollowUserList(APIView):
+    # View followed users
+    def get(self, request, fk1, fk2):
+        # Check if request has valid id
+        userID = checkID(fk1)
+        if userID is None:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if user exists, then return who that user is following
+        try:
+            following = FollowUser.objects.filter(follower=userID)
+            serializer = FollowUserSerializer(following, many=True)
+            return Response(serializer.data)
+        except CustomUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Follow and unfollow user
+    @permission_classes([IsAuthenticated]) # Logged in users only
+    def post(self, request, fk1, fk2):
+        # Check if request has valid id
+        userID = checkID(fk1)
+        if userID is None:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+        followedUserID = checkID(fk2)
+        if followedUserID is None:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if user exists, then add them to followed users
+        try:
+            user = CustomUser.objects.get(id=userID)
+            followedUser = CustomUser.objects.get(id=followedUserID)
+            if not FollowUser.objects.filter(follower=userID, following=followedUserID).exists():
+                FollowUser.objects.create(follower=user, following=followedUser)
+                return Response({"Following": followedUserID}, status=status.HTTP_200_OK)
+            else:
+                FollowUser.objects.filter(follower=userID, following=followedUserID).delete()
+                return Response({"Unfollowed": followedUserID}, status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     
 
 class PostList(APIView):
@@ -203,9 +242,9 @@ class SearchPosts(APIView):
                 
 class LikePost(APIView):
     # View likes of post
-    def get(self, request, pk, fk):
+    def get(self, request, fk1, fk2):
         # Check if request has valid id
-        postID = checkID(fk)
+        postID = checkID(fk1)
         if postID is None:
             return Response({"error": "Invalid post ID"}, status=status.HTTP_400_BAD_REQUEST)
         # Check if post exists, then return likes
@@ -218,12 +257,12 @@ class LikePost(APIView):
         
     # Like a post
     @permission_classes([IsAuthenticated]) # Logged in users only
-    def post(self, request, pk, fk):
+    def post(self, request, fk1, fk2):
         # Check if request has valid id
-        postID = checkID(fk)
+        postID = checkID(fk1)
         if postID is None:
             return Response({"error": "Invalid post ID"}, status=status.HTTP_400_BAD_REQUEST)
-        userID = checkID(pk)
+        userID = checkID(fk2)
         if userID is None:
             return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
         # Check if post and user exists then add or remove like
