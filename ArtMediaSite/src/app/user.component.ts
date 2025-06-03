@@ -24,6 +24,8 @@ export class UserComponent {
   following: any = [];
   followingUsernames: { [key: string]: string } = {};
   followingProfilePics: { [key: string]: string } = {};
+  followed: any;
+  buttonName: any;
 
 
   constructor(public webService: WebService,
@@ -38,12 +40,18 @@ export class UserComponent {
     this.user = this.authService.getUserID();
     this.username = this.authService.getUsername();
     this.token = this.authService.getToken();
-    // User profile being viewed
+    // ID of user profile being viewed
     this.userProfile = this.route.snapshot.params['userID'];
+
+    // Check if user is following user profile being viewed
+    if (this.user != this.userProfile) {
+      this.isFollowing(this.user, this.userProfile);
+    }
    
     // Get user profile ID
     this.webService.getUser(this.userProfile).subscribe({
       next: (response: any) => {
+        // User profile being viewed
         this.userProfile = response || {};
         // Retrieve username and the date that user account was created
         this.userProfileDate = formatDate(this.userProfile.created_at,'dd-MM-yyyy','en-GB');
@@ -82,6 +90,23 @@ export class UserComponent {
     });
   }
 
+  isFollowing(currentUser: any, viewedUser: any) {
+    // Check if current user is following user profile being viewed
+    this.webService.getFollowedUsers(currentUser).subscribe({
+      next: (response: any) => {
+        this.followed = false;
+        this.buttonName = "Follow"
+        for (let followedUser of response) {
+          if (followedUser.following == viewedUser) {
+            this.followed = true;
+            this.buttonName = "Unfollow"
+          }
+        }
+      },
+      error: (err) => console.error("Error fetching followed users:", err)
+    });
+  }
+
   // Check if user is logged in
   loggedIn() {
     let result = "";
@@ -100,6 +125,12 @@ export class UserComponent {
 
   // Add user to following
   onFollowUser(userID: any) {
-    return userID;
+    console.log(userID);
+    this.webService.followUser(userID).subscribe({next: () => {}});;
+    return window.location.reload();
   }
+}
+
+function includes(user: any) {
+  throw new Error('Function not implemented.');
 }

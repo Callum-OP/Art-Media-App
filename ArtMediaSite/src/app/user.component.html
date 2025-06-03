@@ -22,7 +22,7 @@
             <p>Joined {{userProfileDate}}
               <br> {{userProfile.bio}}
             </p>
-            <button class="btn btn-outline-light" (click) = "onFollowUser(user)">Follow</button>
+            <button class="btn btn-outline-light" (click) = "onFollowUser(userProfile.id)">{{buttonName}}</button>
           </ng-template>
         </div>
       </div>
