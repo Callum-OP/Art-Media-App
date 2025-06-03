@@ -14,12 +14,6 @@ Users can include a username, email, password, profile picture and biography sec
 
 The site is keyboard compatible meaning it does require a mouse to be used.
 
-
-Features to add:
-View liked posts
-Follow users
-
-Potential features to add:
-Split Posts page into a Home page and a Posts page
-Accessibility features such as: 
-    Options to change text size or colour of site like a night and day mode
+Potential future features to add:
+Split Posts page into a Home page and a Posts page.
+Add option to change text size or colour of site like a night and day mode.
