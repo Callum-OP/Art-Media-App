@@ -5,7 +5,7 @@
     <h1 class="center title"><b>Art Share</b></h1>
   </div>
   <br><br><br><br><br><br><br><br><br><br><br><br><br>
-  <br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br>
   <div class="content rounded" style="background-color: #262933; margin-right: 15px;">
     <div class="row">
       <ng-container *ngIf = "isloggedIn() == true; else loggedOut">
@@ -29,19 +29,17 @@
       <div class="col-sm-7"></div>
       <br><br>
     </div>
-    <div class="row">
-      <br><br><br>
+    <div>
+      <br><br>
       <p>{{sortOption}} posts</p>
-      <div class="col" *ngFor = "let post of posts">
-        <div class="card bg-transparent">
-          <div class="card-img-top">
-            <a [routerLink] = "['/posts/', post.id]"><img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Uploaded Image"/></a>
+      <div class="masonry-container">
+        <div class="masonry-item" *ngFor = "let post of posts">
+          <div class="card bg-transparent">
+            <div class="card-img-top">
+              <a [routerLink] = "['/posts/', post.id]"><img class="rounded img-fluid" [src]="'http://127.0.0.1:8000/' + post.image" alt="Uploaded Image"/></a>
+            </div>
+            <br>
           </div>
-          <div class="card-block">
-            <h5> {{post.title}} </h5>
-            <a [routerLink] = "['/user/', post.user]"><h6><img class="profilePic rounded-circle img-fluid" [src]="'http://127.0.0.1:8000/' + postProfilePics[post.user]" alt="Profile Picture"/>{{postUsernames[post.user]}}</h6></a>
-          </div>
-          <br>
         </div>
       </div>
     </div>
