@@ -19,10 +19,7 @@ jobs:
       - name: Build Angular image
         run: docker build -t angular-app ./ArtMediaSite
 
-      - name: Run Angular build
-        run: docker run --rm angular-app
-
-      - name: Build and run Django (wait for exit)
+      - name: Build and run Django then exit
         run: docker compose up --build --abort-on-container-exit --exit-code-from django
 
       - name: Tear down containers
