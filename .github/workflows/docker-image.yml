@@ -19,7 +19,7 @@ jobs:
 
       - name: Build and run
         run: |
-          docker-compose -f compose.yml up -d --build
+          docker compose -f compose.yml up -d --build
 
       - name: List running containers
         run: docker ps
