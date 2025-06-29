@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -17,17 +16,15 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      - name: Build and run
-        run: |
-          docker compose up -d --build
+      - name: Build Angular image
+        run: docker build -t angular-app ./frontend
 
-      - name: Health check (Django)
-        run: curl --fail http://localhost:8000/ || exit 1
+      - name: Run Angular build
+        run: docker run --rm angular-app
 
-      - name: Health check (Angular)
-        run: curl --fail http://localhost:4200/ || exit 1
+      - name: Build and run Django (wait for exit)
+        run: docker compose up --build --abort-on-container-exit --exit-code-from django
 
-      - name: Shut down
+      - name: Tear down containers
         if: always()
         run: docker compose down
-
