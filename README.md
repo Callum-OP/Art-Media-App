@@ -1,9 +1,11 @@
 # How to run
 
-To run the backend API, change into ArtMediaAPI directory and type the command: python manage.py runserver
-To run the frontend change into ArtMediaSite directory and type the command: ng serve
-To view the site go to:
+To run the backend API, in ArtMediaAPI directory type command: python manage.py runserver
+To run the frontend in ArtMediaSite directory type the command: ng serve
+To then view the site go to:
   http://localhost:4200/posts
+
+Alternatively if you are using docker, in the ArtMediaApp directory type the command: docker compose up --build
 
 # About the app
 
