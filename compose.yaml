@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./ArtMediaAPI
+    volumes:
+      - ./ArtMediaAPI:/api
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=ArtMediaAPI.settings
+
+  frontend:
+    build: ./ArtMediaSite
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
+
+volumes:
+  postgres_data:
