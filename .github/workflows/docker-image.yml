@@ -16,12 +16,9 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
+        # Just build the images to check for errors wuthout running them (cause then they may run forever)
       - name: Build Angular image
         run: docker build -t angular-app ./ArtMediaSite
 
-      - name: Build and run Django then exit
-        run: docker compose up --build --abort-on-container-exit --exit-code-from backend
-
-      - name: Tear down containers
-        if: always()
-        run: docker compose down
+      - name: Build Django image
+        run: docker build -t django-app ./ArtMediaAPI
