@@ -1,7 +1,14 @@
-This is a social media app, specifically targeted towards art and animation.
+# How to run
 
-To run the backend API, change into ArtMediaAPI directory and type the command: python manage.py runserver.
-To run the frontend change into ArtMediaSite directory and type the command: ng serve.
+To run the backend API, change into ArtMediaAPI directory and type the command: python manage.py runserver
+To run the frontend change into ArtMediaSite directory and type the command: ng serve
+To view the site go to:
+  http://localhost:4200/posts
+
+# About the app
+
+This is a social media app, specifically targeted towards art and animation.
+I wanted to make a full stack app with Django and Angular so I made this social media app.
 
 Users can view posts as well as any likes or comments they have and use the search bar to look for specific posts. Users can also click onto user accounts to view details about the user or view posts that user has made.
 Users can create an account or log in to an existing account, logging in allows users to add their own posts or comments which they can edit or delete, also while logged in they will be able to like posts or unlike posts.
