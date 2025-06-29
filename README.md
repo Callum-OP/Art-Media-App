@@ -1,9 +1,11 @@
-#How to run
+# How to run
 
 To run the backend API, change into ArtMediaAPI directory and type the command: python manage.py runserver.
 To run the frontend change into ArtMediaSite directory and type the command: ng serve.
+To view the site go to:
+  http://localhost:4200/posts
 
-#About the app
+# About the app
 
 This is a social media app, specifically targeted towards art and animation.
 I wanted to make a full stack app with Django and Angular so I made this social media app.
