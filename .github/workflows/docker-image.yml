@@ -16,7 +16,7 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-        # Just build the images to check for errors wuthout running them (cause then they may run forever)
+        # Just build the images to check for errors without running them (cause then they may run forever)
       - name: Build Angular image
         run: docker build -t angular-app ./ArtMediaSite
 
