@@ -1,11 +1,12 @@
 # How to run
 
+To run locally you would need to change DATABASES = {'HOST': os.getenv('DB_HOST', 'db')} in the settings.py file of the api folder so that it says 'localhost' instead of 'db'.
 To run the backend API, in ArtMediaAPI directory type command: python manage.py runserver
 To run the frontend in ArtMediaSite directory type the command: ng serve
 To then view the site go to:
   http://localhost:4200/posts
 
-Alternatively if you are using docker, in the ArtMediaApp directory type the command: docker compose up --build
+Alternatively to run via docker, in the ArtMediaApp directory type the command: docker compose up --build
 
 # About the app
 
