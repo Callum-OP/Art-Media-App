@@ -40,7 +40,6 @@ export class SignUpComponent {
       next: (response: any) => {
         this.authService.setUserID(response.id);
         this.authService.setUsername(response.username);
-        this.authService.setToken(this.cookieService.get('csrftoken'));
         return window.location.href='http://localhost:4200/posts/';
       },
       error: (err) => console.error("Error creating user:", err)

@@ -59,8 +59,7 @@ class UserList(APIView):
                 if user is not None:
                     # Login user
                     login(request, user)
-                    # After login a csrf token will be available within cookies 
-                    # for use in accessing views that are for logged in users only
+                    # After login a session id will be made that is used to allow access to logged in user only views
                     data = Response({'id': user.id, 'username':  user.username}, status=status.HTTP_201_CREATED)
                     return data
                 else:

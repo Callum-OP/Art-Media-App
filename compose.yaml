@@ -1,22 +1,58 @@
-version: '3.9'
-
 services:
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: artmedia
+      POSTGRES_USER: artuser
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - artnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U artuser -d artmedia"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./ArtMediaAPI
+    container_name: django-app
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - ./ArtMediaAPI:/api
+      - ./ArtMediaAPI:/code
+      - media-data:/app/media 
     ports:
       - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
-      - DJANGO_SETTINGS_MODULE=ArtMediaAPI.settings
+      DB_NAME: artmedia
+      DB_USER: artuser
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
+    networks:
+      - artnet
 
   frontend:
     build: ./ArtMediaSite
+    container_name: angular-app
     ports:
       - "4200:4200"
     depends_on:
       - backend
 
-
 volumes:
-  postgres_data:
+  pgdata:
+  media-data:
+
+networks:
+  artnet:
+

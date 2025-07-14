@@ -13,12 +13,6 @@ export class AuthService {
 
   constructor(private router: Router) { }
 
-  // Store token in local storage
-  public setToken(token: string): void {
-    this.token = token;
-    localStorage.setItem("token", token);
-  }
-
   // Store user id in local storage
   public setUserID(user: string): void {
     this.user = user;
@@ -29,12 +23,6 @@ export class AuthService {
   public setUsername(username: string): void {
     this.username = username;
     localStorage.setItem("username", username);
-  }
-
-  // Get token from local storage
-  public getToken(): string {
-    this.token = localStorage.getItem('token') || this.token;
-    return this.token;
   }
 
   // Get user id from local storage
@@ -51,7 +39,7 @@ export class AuthService {
 
   // Check if user has user id and token stored in local storage
   public isAuthenticated(): Observable<boolean> {
-    if (localStorage.getItem('user') && localStorage.getItem('token')) {
+    if (localStorage.getItem('user')) {
       return of(true);
     }
     else {
@@ -84,7 +72,6 @@ export class AuthService {
     this.token = '';
     this.user = '';
     this.username = '';
-    localStorage.setItem("token", '');
     localStorage.setItem("user", '');
     localStorage.setItem("username", '');
     localStorage.setItem("sort", 'Newest');

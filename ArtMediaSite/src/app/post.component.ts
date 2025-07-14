@@ -18,7 +18,6 @@ export class PostComponent {
   comments: any = [];
   user: any = "";
   username: any = "";
-  token: any = "";
   postID: any = "";
   postUsername: any = "";
   postProfilePic: any = "";
@@ -40,7 +39,6 @@ export class PostComponent {
   ngOnInit() {
     this.user = this.authService.getUserID();
     this.username = this.authService.getUsername();
-    this.token = this.authService.getToken();
     this.postID = this.route.snapshot.params['postID'];
 
     // Get likes of post

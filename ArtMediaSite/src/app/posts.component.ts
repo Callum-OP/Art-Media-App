@@ -20,7 +20,6 @@ export class PostsComponent {
   comments: any = [];
   user: any = "";
   username: any = "";
-  token: any = "";
   postUsernames: { [key: string]: string } = {};
   postProfilePics: { [key: string]: string } = {};
 
@@ -35,7 +34,6 @@ export class PostsComponent {
   ngOnInit() {
     this.user = this.authService.getUserID();
     this.username = this.authService.getUsername();
-    this.token = this.authService.getToken();
     // Get all posts
     this.webService.getPosts().subscribe({
         next: (response: any) => {

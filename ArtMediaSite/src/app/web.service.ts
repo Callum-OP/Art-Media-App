@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable} from '@angular/core';
 import { AuthService } from './authservice.component';
 import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class WebService {
 
   constructor(private authService: AuthService, 
     private http: HttpClient, 
+    private cookieService: CookieService,
     private route: ActivatedRoute) {
   }
 
@@ -55,17 +57,6 @@ export class WebService {
   }
 
   editUser(Image:any, User: any, userID: any) {
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
     let postData = new FormData();
     if (Image instanceof File) {
       this.img = Image;
@@ -78,7 +69,7 @@ export class WebService {
     postData.append("profile_pic", this.img);
     postData.append("bio", User.bio);
 
-    return this.http.put('http://127.0.0.1:8000/api/users/' + userID + '/', postData, requestOptions);
+    return this.http.put('http://127.0.0.1:8000/api/users/' + userID + '/', postData);
   }
 
   getFollowedUsers(user: any) {
@@ -87,19 +78,8 @@ export class WebService {
   }
   
   followUser(followedID: any) {
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }),
-    };
-
     this.userID = this.authService.getUserID();
-    return this.http.post('http://127.0.0.1:8000/api/users/' + this.userID + '/following/' + followedID + '/', requestOptions);
+    return this.http.post('http://127.0.0.1:8000/api/users/' + this.userID + '/following/' + followedID + '/', "follow");
   }
 
   // URL requests for posts
@@ -114,17 +94,6 @@ export class WebService {
   }
 
   postPost(Image:any, Post: any) {
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
     let postData = new FormData();
     if (Image instanceof File) {
       this.img = Image;
@@ -138,21 +107,10 @@ export class WebService {
     postData.append("text", Post.text);
     postData.append("image", this.img);
 
-    return this.http.post('http://127.0.0.1:8000/api/posts/', postData, requestOptions);
+    return this.http.post('http://127.0.0.1:8000/api/posts/', postData);
   }
 
   editPost(Image:any, Post: any, postID: any) {
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
     let postData = new FormData();
     if (Image instanceof File) {
       this.img = Image;
@@ -166,22 +124,11 @@ export class WebService {
     postData.append("text", Post.text);
     postData.append("image", this.img);
 
-    return this.http.put('http://127.0.0.1:8000/api/posts/' + postID + '/', postData, requestOptions);
+    return this.http.put('http://127.0.0.1:8000/api/posts/' + postID + '/', postData);
   }
 
   deletePost(postID: any) {
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
-    return this.http.delete('http://127.0.0.1:8000/api/posts/' + postID + '/', requestOptions);
+    return this.http.delete('http://127.0.0.1:8000/api/posts/' + postID + '/');
   }
 
   searchPosts(search: any) {
@@ -195,20 +142,9 @@ export class WebService {
   }
 
   likePost(postID: any) {
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
     this.userID = this.authService.getUserID();
     this.postID = postID;
-    return this.http.post('http://127.0.0.1:8000/api/posts/' + postID + '/likes/' + this.userID + '/', requestOptions);
+    return this.http.post('http://127.0.0.1:8000/api/posts/' + postID + '/likes/' + this.userID + '/', "like");
   }
 
   // URL requests for comments
@@ -219,38 +155,16 @@ export class WebService {
   }
 
   postComment(Comment: any, postID: any) {
-    this.token = this.authService.getToken();
-    // Put token in header of request
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
     let postData = new FormData();
 
     this.userID = this.authService.getUserID();
     postData.append("user", this.userID);
     postData.append("text", Comment.text);
 
-    return this.http.post('http://127.0.0.1:8000/api/posts/' + postID + '/comments/', postData, requestOptions);
+    return this.http.post('http://127.0.0.1:8000/api/posts/' + postID + '/comments/', postData);
   }
 
   editComment(Comment: any, postID: any, commentID: any) {
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
     let postData = new FormData();
 
     this.userID = this.authService.getUserID();
@@ -258,23 +172,11 @@ export class WebService {
     postData.append("post", postID);
     postData.append("text", Comment.text);
 
-    return this.http.put('http://127.0.0.1:8000/api/posts/' + postID + '/comments/' + commentID  + '/', postData, requestOptions);
+    return this.http.put('http://127.0.0.1:8000/api/posts/' + postID + '/comments/' + commentID  + '/', postData);
   }
 
   deleteComment(commentID: any) {
     this.postID = this.getpostID;
-
-    // Put token in header of request
-    this.token = this.authService.getToken();
-    if (!this.token) {
-      throw new Error('Unauthenticated, CSRF token missing');
-    }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders({
-        'X-CSRFToken': this.token,
-      }), 
-    };
-
-    return this.http.delete('http://127.0.0.1:8000/api/posts/' + this.postID + '/comments/' + commentID + '/', requestOptions);
+    return this.http.delete('http://127.0.0.1:8000/api/posts/' + this.postID + '/comments/' + commentID + '/');
   }
 }

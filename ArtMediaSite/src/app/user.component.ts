@@ -16,7 +16,6 @@ export class UserComponent {
 
   user: any = "";
   username: any = "";
-  token: any = "";
   userProfile: any = "";
   userProfileUsername: any = "";
   userProfileDate: any = "";
@@ -39,7 +38,6 @@ export class UserComponent {
     // Current logged in user
     this.user = this.authService.getUserID();
     this.username = this.authService.getUsername();
-    this.token = this.authService.getToken();
     // ID of user profile being viewed
     this.userProfile = this.route.snapshot.params['userID'];
 
