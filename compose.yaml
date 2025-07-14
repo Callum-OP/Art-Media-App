@@ -1,4 +1,11 @@
 services:
+  fix-media-permissions:
+    image: python:3.11-slim
+    command: ["sh", "-c", "chown -R 10001:10001 /app/media"]
+    volumes:
+      - media-data:/app/media
+    user: root
+
   db:
     image: postgres:15
     container_name: postgres-db
