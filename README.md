@@ -35,8 +35,10 @@ Add option to change text size or colour of site like a night and day mode.
 
 <img width="946" height="587" alt="Art Share Full Home Title" src="https://github.com/user-attachments/assets/3d889940-699c-498f-bc98-f20cc92991cd" />
 <img width="960" height="440" alt="Art Share Home" src="https://github.com/user-attachments/assets/27fd15c5-daf9-43c4-a14b-957b711a1926" />
+<img width="960" height="446" alt="Art Share My Post Page" src="https://github.com/user-attachments/assets/33f223fe-60ca-4b98-a3bf-d83af137b51e" />
 <img width="960" height="443" alt="Art Share Logged Out Post Page" src="https://github.com/user-attachments/assets/2112e0b1-2927-4f4a-afe0-dedfb2268c93" />
 <img width="947" height="445" alt="Art Share Post" src="https://github.com/user-attachments/assets/ddc62136-b807-4f0d-b44c-90adc64aa5c1" />
 <img width="959" height="444" alt="Art Share My Account Page" src="https://github.com/user-attachments/assets/56d142d0-0a34-47da-993a-b406a5d98b7b" />
+<img width="707" height="240" alt="Art Share Search Posts Page" src="https://github.com/user-attachments/assets/43fe394b-4d65-4ce5-a48c-f50bd1c606f7" />
 
 
