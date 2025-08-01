@@ -2,7 +2,7 @@
 
 The easiest way to run this app is via docker compose, assuming you have docker installed: in the ArtMediaApp directory you simply type the command: docker compose up --build
 
-Running locally is also easy enough. 
+Running locally is also easy enough. Ensure you have the items mentioned in requirements.txt installed.
 To run the backend API, in ArtMediaAPI directory type command: python manage.py runserver
 To run the frontend in ArtMediaSite directory type the command: ng serve
 
@@ -11,6 +11,8 @@ It would be 'db' for docker or 'localhost' for running locally.
 
 To then view the site go to:
   http://localhost:4200/posts
+
+To run pytests locally go to ArtMediaAPI directory and use command: python -m pytest
 
 # About the app
 
