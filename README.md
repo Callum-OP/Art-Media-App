@@ -1,15 +1,16 @@
 # How to run
 
-The easiest way to run this app is via docker, assuming you have docker installed: in the ArtMediaApp directory type the command: docker compose up --build
+The easiest way to run this app is via docker compose, assuming you have docker installed: in the ArtMediaApp directory you simply type the command: docker compose up --build
 
-To run locally you would need to change DATABASES = {'HOST': os.getenv('DB_HOST', 'db')} in the settings.py file of the api folder so that it says 'localhost' instead of 'db'.
+Running locally is also easy enough. 
 To run the backend API, in ArtMediaAPI directory type command: python manage.py runserver
 To run the frontend in ArtMediaSite directory type the command: ng serve
+
+Depending on whether it is in docker or locally you may need to change settings.py where it says 'db' in: DATABASES = {'HOST': os.getenv('DB_HOST', 'db')}. 
+It would be 'db' for docker or 'localhost' for running locally.
+
 To then view the site go to:
   http://localhost:4200/posts
-
-To populate the database I have a datadump.json file with sample data in the api folder.
-You can run a command such as python manage.py migrate && python manage.py loaddata datadump.json
 
 # About the app
 
