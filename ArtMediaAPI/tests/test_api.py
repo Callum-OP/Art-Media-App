@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
-from api.models import CustomUser, Post, Comment
+from api.models import CustomUser, Post, Comment, FollowUser
 
 @pytest.mark.django_db
 def test_create_user_and_login():
@@ -94,3 +94,62 @@ class TestSpecificPostAPI:
         url = reverse("comment", kwargs={"fk": self.post.id, "pk": "bad-id"})
         response = self.client.get(url)
         assert response.status_code == 400
+
+    
+    # Search by title or text
+    def test_search_posts_by_text(self):
+        Post.objects.create(title="Hello World", text="Test the search", user=self.user)
+        # Test title search
+        url = reverse("search", kwargs={"search": "Hello"})
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert any("Hello World" in post["title"] for post in response.data)
+        # Test text search
+        url = reverse("search", kwargs={"search": "search"})
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert any("search" in post["text"] for post in response.data)
+
+    # Search by id
+    def test_search_posts_by_user_id(self):
+        url = reverse("search", kwargs={"search": str(self.user.id)})
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert str(self.post.id) in [p["id"] for p in response.data]
+
+
+    # View likes
+    def test_get_post_likes(self):
+        url = reverse("post-like", kwargs={"fk1": self.post.id, "fk2": self.user.id})
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert "likes" in response.data
+
+    # Like post
+    def test_toggle_like_post(self):
+        url = reverse("post-like", kwargs={"fk1": self.post.id, "fk2": self.user.id})
+        response = self.client.post(url)
+        assert response.status_code == 200
+        assert response.data["like"] is True
+        # Unlike post
+        response = self.client.post(url)
+        assert response.data["like"] is False
+
+    
+    # Follow user
+    def test_follow_user(self):
+        target = CustomUser.objects.create_user(username="bob", password="abc1234")
+        url = reverse("follow-user", kwargs={"fk1": self.user.id, "fk2": target.id})
+        response = self.client.post(url)
+        assert response.status_code == 200
+        assert response.data["Following"] == target.id
+
+    # Unfollow user
+    def test_unfollow_user(self):
+        target = CustomUser.objects.create_user(username="bob", password="abc1234")
+        FollowUser.objects.create(follower=self.user, following=target)
+        url = reverse("follow-user", kwargs={"fk1": self.user.id, "fk2": target.id})
+        response = self.client.post(url)
+        assert response.status_code == 200
+        assert response.data["Unfollowed"] == target.id
+
